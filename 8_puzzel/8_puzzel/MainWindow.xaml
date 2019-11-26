@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_8_puzzel"
         mc:Ignorable="d" ResizeMode="CanMinimize"
-        Title="8 Puzzle" Height="600" Width="800" Loaded="Window_Loaded">
+        Title="8 Puzzle" Height="700" Width="1100" Loaded="Window_Loaded">
     <DockPanel>
         <ToolBarTray  DockPanel.Dock="Top">
-            <ToolBar Name="toolBar" Height="27" Margin="0,0,-0.6,0">
+            <ToolBar Name="toolBar" Height="27">
                 <Button ToolTip="New game." Click="New_Click">
                     <StackPanel Orientation="Horizontal" Height="13">
                         <Image Name="newGame" Width="10" Height="10" Source="Images/new.png"/>
@@ -37,35 +37,37 @@
         </ToolBarTray>
         <Grid Background="LightBlue">
             <Grid.RowDefinitions>
-                <RowDefinition Height="2*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.8*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Border BorderThickness="3px" BorderBrush="Gray" Grid.Row="0" Grid.Column="0" Margin="10">
-                <Canvas Name="gamefieldCanvas"/>
+                <Canvas Name="gamefieldCanvas" Background="White"/>
             </Border>
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="3:00" FontSize="100" TextAlignment="Center" 
-                       Background="LightBlue"/>
+            <TextBlock Text="3:00" FontSize="120" TextAlignment="Center" VerticalAlignment="Center"
+                       Background="LightBlue" Grid.Row="1" Grid.Column="0" Margin="0,0,0,30"/>
             <Canvas Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
-                <Image Name="imgToPlay" Source="Images/none.png" 
-                       Width="263" Height="190" Canvas.Left="10" Canvas.Top="10" />
+                <Border BorderThickness="3px" BorderBrush="Gray" Margin="10">
+                    <Image Name="imgToPlay" Source="Images/none.png" Stretch="Fill"
+                       Width="361" Height="232" Canvas.Left="10" Canvas.Top="10" />
+                </Border>
                 <Button Name="btnChooseImg" Content="Choose " FontSize="20" Click="BtnChooseImg_Click"
-                        Width="100" Height="40" Canvas.Left="84" Canvas.Top="211"/>
+                        Width="126" Height="58" Canvas.Left="133" Canvas.Top="277"/>
                 <Button Name="btnPause" Content="Pause" FontSize="20" Click="BtnPause_Click"
-                        Width="100" Height="40" Canvas.Left="23" Canvas.Top="293"/>
+                        Width="124" Height="56" Canvas.Left="33" Canvas.Top="376" RenderTransformOrigin="0.512,1.059"/>
                 <Button Name="btnQuit" Content="Quit" FontSize="20" Click="BtnQuit_Click"
-                        Width="100" Height="40" Canvas.Left="150" Canvas.Top="293"/>
+                        Width="124" Height="56" Canvas.Left="234" Canvas.Top="376" RenderTransformOrigin="0.496,0.911"/>
                 <Button Name="btnLeft" Content="⇦" FontSize="30" Click="BtnLeft_Click"
-                        Width="50" Height="50" RenderTransformOrigin="0.6,3.524" Canvas.Left="31" Canvas.Top="460"/>
+                        Width="70" Height="60" RenderTransformOrigin="0.6,3.524" Canvas.Left="65" Canvas.Top="550"/>
                 <Button Name="btnRight" Content="⇨" FontSize="30" Click="BtnRight_Click"
-                        Width="50" Height="50" RenderTransformOrigin="0.6,3.524" Canvas.Left="183" Canvas.Top="460"/>
+                        Width="70" Height="60" RenderTransformOrigin="0.6,3.524" Canvas.Left="263" Canvas.Top="550"/>
                 <Button Name="btnDown" Content="⇩" FontSize="30" Click="BtnDown_Click"
-                        Width="50" Height="50" RenderTransformOrigin="0.6,3.524" Canvas.Left="111" Canvas.Top="460"/>
+                        Width="70" Height="60" RenderTransformOrigin="0.6,3.524" Canvas.Left="162" Canvas.Top="550"/>
                 <Button Name="btnUp" Content="⇧" FontSize="30" Click="BtnUp_Click"
-                        Width="50" Height="50" RenderTransformOrigin="0.6,3.524" Canvas.Left="111" Canvas.Top="394"/>
+                        Width="70" Height="60" RenderTransformOrigin="0.6,3.524" Canvas.Left="162" Canvas.Top="468"/>
             </Canvas>
         </Grid>
     </DockPanel>
