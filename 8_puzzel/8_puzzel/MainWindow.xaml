@@ -4,9 +4,69 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_8_puzzel"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        mc:Ignorable="d" ResizeMode="CanMinimize"
+        Title="8 Puzzle" Height="600" Width="800" Loaded="Window_Loaded">
+    <DockPanel>
+        <ToolBarTray  DockPanel.Dock="Top">
+            <ToolBar Name="toolBar" Height="27" Margin="0,0,-0.6,0">
+                <Button ToolTip="New game." Click="New_Click">
+                    <StackPanel Orientation="Horizontal" Height="13">
+                        <Image Name="newGame" Width="10" Height="10" Source="Images/new.png"/>
+                        <TextBlock Margin="3,-2,0,-0.2">New</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="Save game to text file." Click="Save_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Name="save" Width="10" Height="10" Source="Images/save.png"/>
+                        <TextBlock Margin="3,0,0,0">Save</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="Load from text file." Click="Load_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Name="load" Width="10" Height="10" Source="Images/load.png"/>
+                        <TextBlock Margin="3,0,0,0">Load</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="Need some help." Click="Help_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Name="Help" Width="11" Height="10" Source="Images/help.png"/>
+                        <TextBlock Margin="3,0,0,0">Help</TextBlock>
+                    </StackPanel>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        <Grid Background="LightBlue">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.8*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Border BorderThickness="3px" BorderBrush="Gray" Grid.Row="0" Grid.Column="0" Margin="10">
+                <Canvas Name="gamefieldCanvas"/>
+            </Border>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="3:00" FontSize="100" TextAlignment="Center" 
+                       Background="LightBlue"/>
+            <Canvas Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
+                <Image Name="imgToPlay" Source="Images/none.png" 
+                       Width="263" Height="190" Canvas.Left="10" Canvas.Top="10" />
+                <Button Name="btnChooseImg" Content="Choose " FontSize="20" Click="BtnChooseImg_Click"
+                        Width="100" Height="40" Canvas.Left="84" Canvas.Top="211"/>
+                <Button Name="btnPause" Content="Pause" FontSize="20" Click="BtnPause_Click"
+                        Width="100" Height="40" Canvas.Left="23" Canvas.Top="293"/>
+                <Button Name="btnQuit" Content="Quit" FontSize="20" Click="BtnQuit_Click"
+                        Width="100" Height="40" Canvas.Left="150" Canvas.Top="293"/>
+                <Button Name="btnLeft" Content="⇦" FontSize="30" Click="BtnLeft_Click"
+                        Width="50" Height="50" RenderTransformOrigin="0.6,3.524" Canvas.Left="31" Canvas.Top="460"/>
+                <Button Name="btnRight" Content="⇨" FontSize="30" Click="BtnRight_Click"
+                        Width="50" Height="50" RenderTransformOrigin="0.6,3.524" Canvas.Left="183" Canvas.Top="460"/>
+                <Button Name="btnDown" Content="⇩" FontSize="30" Click="BtnDown_Click"
+                        Width="50" Height="50" RenderTransformOrigin="0.6,3.524" Canvas.Left="111" Canvas.Top="460"/>
+                <Button Name="btnUp" Content="⇧" FontSize="30" Click="BtnUp_Click"
+                        Width="50" Height="50" RenderTransformOrigin="0.6,3.524" Canvas.Left="111" Canvas.Top="394"/>
+            </Canvas>
+        </Grid>
+    </DockPanel>
 </Window>

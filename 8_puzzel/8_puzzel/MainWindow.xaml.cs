@@ -24,5 +24,65 @@ namespace _8_puzzel
         {
             InitializeComponent();
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Load_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("button Load clicked");
+        }
+
+        private void Help_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("button Help clicked");
+        }
+
+        private void New_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("button New clicked");
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("button Save clicked");
+        }
+
+        private void BtnChooseImg_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("button Choose clicked");
+        }
+
+        private void BtnPause_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("button Pause clicked");
+        }
+
+        private void BtnQuit_Click(object sender, RoutedEventArgs e)
+        {
+            Environment.Exit(1);
+        }
+
+        private void BtnLeft_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("button Left clicked");
+        }
+
+        private void BtnRight_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("button Right clicked");
+        }
+
+        private void BtnDown_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("button Down clicked");
+        }
+
+        private void BtnUp_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("button Up clicked");
+        }
     }
 }
