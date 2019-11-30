@@ -7,8 +7,8 @@
         mc:Ignorable="d" ResizeMode="CanMinimize"
         Title="8 Puzzle" Height="700" Width="1100" Loaded="Window_Loaded">
     <DockPanel>
-        <ToolBarTray  DockPanel.Dock="Top">
-            <ToolBar Name="toolBar" Height="27">
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar Name="abc" Height="27">
                 <Button ToolTip="New game." Click="New_Click">
                     <StackPanel Orientation="Horizontal" Height="13">
                         <Image Name="newGame" Width="10" Height="10" Source="Images/new.png"/>
@@ -51,12 +51,14 @@
                        Background="LightBlue" Grid.Row="1" Grid.Column="0" Margin="0,0,0,30"/>
             <Canvas Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
                 <Border BorderThickness="3px" BorderBrush="Gray" Margin="10">
-                    <Image Name="imgToPlay" Source="Images/none.png" Stretch="Fill"
-                       Width="361" Height="232" Canvas.Left="10" Canvas.Top="10" />
+                    <Image Name="previewImage" Source="Images/none.png" Stretch="Fill"
+                       Width="360" Height="230" Canvas.Left="10" Canvas.Top="10" />
                 </Border>
                 <Button Name="btnChooseImg" Content="Choose " FontSize="20" Click="BtnChooseImg_Click"
                         Width="126" Height="58" Canvas.Left="133" Canvas.Top="277"/>
-                <Button Name="btnPause" Content="Pause" FontSize="20" Click="BtnPause_Click"
+                <Button Name="btnPlay" Content="Play" FontSize="20" Click="BtnPlay_Click"
+                        Width="124" Height="56" Canvas.Left="33" Canvas.Top="376" RenderTransformOrigin="0.512,1.059"/>
+                <Button Name="btnPause" Content="Pause" FontSize="20" Click="BtnPause_Click" Visibility="Hidden"
                         Width="124" Height="56" Canvas.Left="33" Canvas.Top="376" RenderTransformOrigin="0.512,1.059"/>
                 <Button Name="btnQuit" Content="Quit" FontSize="20" Click="BtnQuit_Click"
                         Width="124" Height="56" Canvas.Left="234" Canvas.Top="376" RenderTransformOrigin="0.496,0.911"/>
