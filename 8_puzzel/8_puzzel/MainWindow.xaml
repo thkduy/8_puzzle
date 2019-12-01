@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_8_puzzel"
-        mc:Ignorable="d" ResizeMode="CanMinimize"
+        mc:Ignorable="d" ResizeMode="CanMinimize" MouseLeftButtonUp="Window_MouseLeftButtonUp"
         Title="8 Puzzle" Height="700" Width="1100" Loaded="Window_Loaded">
     <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
@@ -35,7 +35,7 @@
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <Grid Background="LightBlue">
+        <Grid Name="grid" Background="LightBlue">
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
@@ -44,13 +44,13 @@
                 <ColumnDefinition Width="1.8*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Border BorderThickness="3px" BorderBrush="Gray" Grid.Row="0" Grid.Column="0" Margin="10">
+            <Border BorderThickness="3" BorderBrush="Gray" Grid.Row="0" Grid.Column="0" Margin="10">
                 <Canvas Name="gamefieldCanvas" Background="White"/>
             </Border>
             <TextBlock Text="3:00" FontSize="120" TextAlignment="Center" VerticalAlignment="Center"
                        Background="LightBlue" Grid.Row="1" Grid.Column="0" Margin="0,0,0,30"/>
             <Canvas Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
-                <Border BorderThickness="3px" BorderBrush="Gray" Margin="10">
+                <Border BorderThickness="3" BorderBrush="Gray" Margin="10">
                     <Image Name="previewImage" Source="Images/none.png" Stretch="Fill"
                        Width="360" Height="230" Canvas.Left="10" Canvas.Top="10" />
                 </Border>
