@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -358,8 +359,17 @@ namespace _8_puzzel
                 {
                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1];
 
-                    Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
-                    Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+                    //trượt
+                    var animation = new DoubleAnimation();
+                    animation.From = (_currentIndexNoneImage.Y + 1)*(width + 2);
+                    animation.To = _currentIndexNoneImage.Y * (width + 2);
+                    animation.Duration = new Duration(TimeSpan.FromSeconds(1));
+
+                    var story = new Storyboard();
+                    story.Children.Add(animation);
+                    Storyboard.SetTarget(animation, _selectedBitmap);
+                    Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.LeftProperty));
+                    story.Begin(this);
 
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1] = null;
