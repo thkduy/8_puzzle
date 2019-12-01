@@ -70,6 +70,7 @@ namespace _8_puzzel
                 for(int j = 0 ; j < sizeY ; j++)
                 {
                     gamefieldCanvas.Children.Remove(_images[i, j]);
+                    _images[i, j] = null;
                 }
             }
         }
@@ -155,6 +156,11 @@ namespace _8_puzzel
 
         private void CropImage_MouseMove(object sender, MouseEventArgs e)
         {
+            if (!inGame)
+            {
+                return;
+            }
+
             var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
             var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
             var position = e.GetPosition(gamefieldCanvas);
@@ -182,7 +188,13 @@ namespace _8_puzzel
        
         private void CropImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if(_selectedIndex.X == -1)
+            if (!inGame)
+            {
+                MessageBox.Show("Game has not been started");
+                return;
+            }
+
+            if (_selectedIndex.X == -1)
             {
                 return;
             }
@@ -243,9 +255,14 @@ namespace _8_puzzel
                 Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
                 Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
+                //thay đổi trong _images
+                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
+                _images[(int)_selectedIndex.X, (int)_selectedIndex.Y] = null;
+
                 //doi lai vi tri cua o trong hien tai
                 _currentIndexNoneImage.X = _selectedIndex.X;
                 _currentIndexNoneImage.Y = _selectedIndex.Y;
+
                 //MessageBox.Show($"current:{_currentIndexNoneImage.X} - {_currentIndexNoneImage.Y}");
                 //this.Title = $"chuyen vi tri moi  selected: {_selectedIndex.X} - {_selectedIndex.Y} current:{_currentIndexNoneImage.X} - {_currentIndexNoneImage.Y} a[{_selectedBitmap.Tag}]";
                 _selectedIndex.X = -1;
@@ -257,6 +274,11 @@ namespace _8_puzzel
 
         private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (!inGame)
+            {
+                return;
+            }
+
             var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
             var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
 
@@ -278,6 +300,12 @@ namespace _8_puzzel
 
         private void CropImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (!inGame)
+            {
+                MessageBox.Show("Game has not been started");
+                return;
+            }
+
             var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
             var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
             _isDragging = true;
