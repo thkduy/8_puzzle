@@ -35,7 +35,7 @@
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <Grid Name="grid" Background="LightBlue">
+        <Grid Background="LightBlue">
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
@@ -45,7 +45,7 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Border BorderThickness="3" BorderBrush="Gray" Grid.Row="0" Grid.Column="0" Margin="10">
-                <Canvas Name="gamefieldCanvas" Background="White"/>
+                <Canvas Name="gamefieldCanvas" Background="LightGray"/>
             </Border>
             <TextBlock Text="3:00" FontSize="120" TextAlignment="Center" VerticalAlignment="Center"
                        Background="LightBlue" Grid.Row="1" Grid.Column="0" Margin="0,0,0,30"/>

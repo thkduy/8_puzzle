@@ -25,14 +25,12 @@ namespace _8_puzzel
         public MainWindow()
         {
             InitializeComponent();
-        }        
+        }
 
+        Image [,] _images;
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
-            
-
-            
+            _images = new Image[3, 3];
         }
 
 
@@ -48,7 +46,18 @@ namespace _8_puzzel
 
         private void New_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("button New clicked");
+            var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+
+            previewImage.Width = 360;
+            previewImage.Height = 230;
+            previewImage.Source = none;
+            for (int i = 0 ; i < 3 ; i++)
+            {
+                for(int j = 0 ; j < 3 ; j++)
+                {
+                    gamefieldCanvas.Children.Remove(_images[i, j]);
+                }
+            }
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -97,6 +106,7 @@ namespace _8_puzzel
                             cropImage.Height = height;
                             cropImage.Source = cropBitmap;
                             cropImage.Tag = new Tuple<int, int>(i, j);
+                            _images[i, j] = cropImage; // tham chiếu tới crop image
                             gamefieldCanvas.Children.Add(cropImage);
                             Canvas.SetLeft(cropImage, j * (width + 2));
                             Canvas.SetTop(cropImage, i * (height + 2));
