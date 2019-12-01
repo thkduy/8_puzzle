@@ -60,20 +60,28 @@ namespace _8_puzzel
 
         private void New_Click(object sender, RoutedEventArgs e)
         {
-            inGame = false;
-            chooseImage = false;
-            var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
-
-            previewImage.Width = 360;
-            previewImage.Height = 230;
-            previewImage.Source = none;
-            for (int i = 0 ; i < sizeX ; i++)
+            MessageBoxResult result = MessageBox.Show("New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+            switch (result)
             {
-                for(int j = 0 ; j < sizeY ; j++)
-                {
-                    gamefieldCanvas.Children.Remove(_images[i, j]);
-                    _images[i, j] = null;
-                }
+                case MessageBoxResult.Yes:
+                    inGame = false;
+                    chooseImage = false;
+                    var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+
+                    previewImage.Width = 360;
+                    previewImage.Height = 230;
+                    previewImage.Source = none;
+                    for (int i = 0; i < sizeX; i++)
+                    {
+                        for (int j = 0; j < sizeY; j++)
+                        {
+                            gamefieldCanvas.Children.Remove(_images[i, j]);
+                            _images[i, j] = null;
+                        }
+                    }
+                    break;
+                case MessageBoxResult.No:
+                    break;
             }
         }
 
@@ -105,8 +113,8 @@ namespace _8_puzzel
                     Canvas.SetTop(previewImage, 0);
 
                     // Bat dau cat thanh 9 manh
-                    var h = (int)(source.Height / 3);//100
-                    var w = (int)(source.Width / 3);//125
+                    var h = (int)(source.Height / sizeX);//100
+                    var w = (int)(source.Width / sizeY);//125
 
                     for (int i = 0; i < sizeX; i++)
                     {
@@ -346,7 +354,16 @@ namespace _8_puzzel
 
         private void BtnQuit_Click(object sender, RoutedEventArgs e)
         {
-            Environment.Exit(1);
+            MessageBoxResult result = MessageBox.Show("Do you want to exit?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    Environment.Exit(1);
+                    break;
+                case MessageBoxResult.No:
+                    break;
+            }
+
         }
 
         private void BtnLeft_Click(object sender, RoutedEventArgs e)
@@ -363,7 +380,7 @@ namespace _8_puzzel
                     var animation = new DoubleAnimation();
                     animation.From = (_currentIndexNoneImage.Y + 1)*(width + 2);
                     animation.To = _currentIndexNoneImage.Y * (width + 2);
-                    animation.Duration = new Duration(TimeSpan.FromSeconds(1));
+                    animation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
 
                     var story = new Storyboard();
                     story.Children.Add(animation);
@@ -393,8 +410,17 @@ namespace _8_puzzel
                 {
                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1];
 
-                    Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
-                    Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+                    //trượt
+                    var animation = new DoubleAnimation();
+                    animation.From = (_currentIndexNoneImage.Y - 1) * (width + 2);
+                    animation.To = _currentIndexNoneImage.Y * (width + 2);
+                    animation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
+
+                    var story = new Storyboard();
+                    story.Children.Add(animation);
+                    Storyboard.SetTarget(animation, _selectedBitmap);
+                    Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.LeftProperty));
+                    story.Begin(this);
 
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1] = null;
@@ -418,8 +444,17 @@ namespace _8_puzzel
                 {
                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y];
 
-                    Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
-                    Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+                    //trượt
+                    var animation = new DoubleAnimation();
+                    animation.From = (_currentIndexNoneImage.X - 1) * (height + 2);
+                    animation.To = _currentIndexNoneImage.X * (height + 2);
+                    animation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
+
+                    var story = new Storyboard();
+                    story.Children.Add(animation);
+                    Storyboard.SetTarget(animation, _selectedBitmap);
+                    Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.TopProperty));
+                    story.Begin(this);
 
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
                     _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y] = null;
@@ -443,8 +478,17 @@ namespace _8_puzzel
                 {
                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y];
 
-                    Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
-                    Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+                    //trượt
+                    var animation = new DoubleAnimation();
+                    animation.From = (_currentIndexNoneImage.X + 1) * (height + 2);
+                    animation.To = _currentIndexNoneImage.X * (height + 2);
+                    animation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
+
+                    var story = new Storyboard();
+                    story.Children.Add(animation);
+                    Storyboard.SetTarget(animation, _selectedBitmap);
+                    Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.TopProperty));
+                    story.Begin(this);
 
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
                     _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y] = null;
