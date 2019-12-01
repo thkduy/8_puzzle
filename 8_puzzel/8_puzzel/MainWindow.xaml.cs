@@ -38,7 +38,7 @@ namespace _8_puzzel
         int[] dong = { -1, 1, 0, 0 };
         int[] cot = { 0, 0, -1, 1 };
         const int sizeX = 3;
-        const int sizeY = 3;
+        const int sizeY = 5;
         bool inGame = false;
         bool chooseImage = false;
         bool isShuffle = false;
@@ -99,9 +99,8 @@ namespace _8_puzzel
                 if (screen.ShowDialog() == true)
                 {
                     chooseImage = true;
-                    var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border //223
-                    var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border //149
-                                                                                 //MessageBox.Show($"{width} - {height}");
+                    var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border //223
+                    var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border //149
 
                     var source = new BitmapImage(new Uri(screen.FileName, UriKind.Absolute));
 
@@ -171,8 +170,8 @@ namespace _8_puzzel
                 return;
             }
 
-            var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
-            var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+            var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
+            var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
             var position = e.GetPosition(gamefieldCanvas);
 
             int i = ((int)position.Y) / height;
@@ -208,8 +207,8 @@ namespace _8_puzzel
             {
                 return;
             }
-            var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
-            var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+            var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
+            var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
 
             //i là dòng, j là cột
             // lấy vị trí trong mảng của hình vừa được chọn
@@ -289,8 +288,8 @@ namespace _8_puzzel
                 return;
             }
 
-            var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
-            var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+            var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
+            var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
 
             if (_selectedBitmap != null)
             {
@@ -319,8 +318,8 @@ namespace _8_puzzel
                 return;
             }
 
-            var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
-            var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+            var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
+            var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
             _isDragging = true;
             _selectedBitmap = sender as Image;
 
@@ -370,8 +369,8 @@ namespace _8_puzzel
         {
             if (inGame == true)
             {
-                var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
-                var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+                var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
+                var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
                 if (_currentIndexNoneImage.Y + 1 < sizeY)
                 {
                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1];
@@ -404,8 +403,8 @@ namespace _8_puzzel
         {
             if (inGame == true)
             {
-                var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
-                var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+                var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
+                var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
                 if (_currentIndexNoneImage.Y - 1 >= 0)
                 {
                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1];
@@ -438,8 +437,8 @@ namespace _8_puzzel
         {
             if (inGame == true)
             {
-                var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
-                var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+                var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
+                var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
                 if (_currentIndexNoneImage.X - 1 >= 0)
                 {
                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y];
@@ -472,8 +471,8 @@ namespace _8_puzzel
         {
             if (inGame == true)
             {
-                var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
-                var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+                var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
+                var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
                 if (_currentIndexNoneImage.X + 1 < sizeX)
                 {
                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y];
@@ -514,8 +513,8 @@ namespace _8_puzzel
                 //tráo đổi
                 if (!isShuffle)
                 {
-                    var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
-                    var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+                    var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
+                    var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
                     var i = 0;
                     Random rnd = new Random();
                     while (i < 100)
