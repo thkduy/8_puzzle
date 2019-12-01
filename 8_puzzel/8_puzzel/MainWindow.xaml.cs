@@ -28,9 +28,19 @@ namespace _8_puzzel
         }
 
         Image [,] _images;
+        bool _isDragging = false;
+        Image _selectedBitmap = null;
+        Point _lastPosition;
+        Point _currentIndexNoneImage;
+        Point _selectedIndex;
+        double startLeft, startTop;
+        int[] dong = { -1, 1, 0, 0 };
+        int[] cot = { 0, 0, -1, 1 };
+        const int sizeX = 3;
+        const int sizeY = 3;
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            _images = new Image[3, 3];
+            _images = new Image[sizeX, sizeY];
         }
 
 
@@ -51,9 +61,9 @@ namespace _8_puzzel
             previewImage.Width = 360;
             previewImage.Height = 230;
             previewImage.Source = none;
-            for (int i = 0 ; i < 3 ; i++)
+            for (int i = 0 ; i < sizeX ; i++)
             {
-                for(int j = 0 ; j < 3 ; j++)
+                for(int j = 0 ; j < sizeY ; j++)
                 {
                     gamefieldCanvas.Children.Remove(_images[i, j]);
                 }
@@ -71,8 +81,8 @@ namespace _8_puzzel
 
             if (screen.ShowDialog() == true)
             {
-                var width = (int)(gamefieldCanvas.ActualWidth / 3);//tru di do rong cua border //223
-                var height = (int)(gamefieldCanvas.ActualHeight / 3) - 1;//tru di do rong cua border //149
+                var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border //223
+                var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border //149
                 //MessageBox.Show($"{width} - {height}");
                 
                 var source = new BitmapImage(new Uri(screen.FileName, UriKind.Absolute));
@@ -88,12 +98,12 @@ namespace _8_puzzel
                 var h = (int)(source.Height / 3);//100
                 var w = (int)(source.Width / 3);//125
 
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < sizeX; i++)
                 {
-                    for (int j = 0; j < 3; j++)
+                    for (int j = 0; j < sizeY; j++)
                     {
 
-                        if (!((i == 2) && (j == 2)))
+                        if (!((i == sizeX - 1) && (j == sizeY - 1)))
                         {
                             //MessageBox.Show($"{h}-{w}");
                             //Debug.WriteLine($"Len = {len}");
@@ -123,8 +133,8 @@ namespace _8_puzzel
                         }
                     }
                 }
-                _currentIndexNoneImage.X = 2;
-                _currentIndexNoneImage.Y = 2;
+                _currentIndexNoneImage.X = sizeX - 1;
+                _currentIndexNoneImage.Y = sizeY - 1;
 
                 _selectedIndex.X = -1;
                 _selectedIndex.Y = -1;
@@ -133,8 +143,8 @@ namespace _8_puzzel
 
         private void CropImage_MouseMove(object sender, MouseEventArgs e)
         {
-            var width = (int)(gamefieldCanvas.ActualWidth / 3);//tru di do rong cua border
-            var height = (int)(gamefieldCanvas.ActualHeight / 3) - 1;//tru di do rong cua border
+            var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
+            var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
             var position = e.GetPosition(gamefieldCanvas);
 
             int i = ((int)position.Y) / height;
@@ -142,7 +152,7 @@ namespace _8_puzzel
 
             //this.Title = $"{position.X} - {position.Y}, a[{i}][{j}]";
 
-            if (_isDragging && i > -1 && i < 3 && j > -1 && j < 3)
+            if (_isDragging && i > -1 && i < sizeX && j > -1 && j < sizeY)
             {
                 var dx = position.X - _lastPosition.X;
                 var dy = position.Y - _lastPosition.Y;
@@ -157,21 +167,15 @@ namespace _8_puzzel
                 _lastPosition = position;
             }
         }
-        
-        bool _isDragging = false;
-        Image _selectedBitmap = null;
-        Point _lastPosition;
-        Point _currentIndexNoneImage;
-        Point _selectedIndex;
-        double startLeft, startTop;
+       
         private void CropImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if(_selectedIndex.X == -1)
             {
                 return;
             }
-            var width = (int)(gamefieldCanvas.ActualWidth / 3);//tru di do rong cua border
-            var height = (int)(gamefieldCanvas.ActualHeight / 3) - 1;//tru di do rong cua border
+            var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
+            var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
 
             //i là dòng, j là cột
             // lấy vị trí trong mảng của hình vừa được chọn
@@ -187,8 +191,7 @@ namespace _8_puzzel
             //kiểm tra hợp lệ mới cho chuyển vị trí hình (trên, dưới, trái, phải của hình none)
             int last_i = ((int)_lastPosition.Y) / height;
             int last_j = ((int)_lastPosition.X) / width;
-            int[] dong = { -1, 1, 0, 0 };
-            int[] cot = { 0, 0, -1, 1 };
+
             bool verifyIndex = false;
 
             if (_currentIndexNoneImage.X == last_i && _currentIndexNoneImage.Y == last_j)
@@ -242,8 +245,8 @@ namespace _8_puzzel
 
         private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var width = (int)(gamefieldCanvas.ActualWidth / 3);//tru di do rong cua border
-            var height = (int)(gamefieldCanvas.ActualHeight / 3) - 1;//tru di do rong cua border
+            var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
+            var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
 
             if (_selectedBitmap != null)
             {
@@ -263,8 +266,8 @@ namespace _8_puzzel
 
         private void CropImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var width = (int)(gamefieldCanvas.ActualWidth / 3);//tru di do rong cua border
-            var height = (int)(gamefieldCanvas.ActualHeight / 3) - 1;//tru di do rong cua border
+            var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
+            var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
             _isDragging = true;
             _selectedBitmap = sender as Image;
 
@@ -275,12 +278,12 @@ namespace _8_puzzel
             var newSelect_Y = ((int)_lastPosition.X) / width;
 
            
-            if (newSelect_X > -1 && newSelect_X < 3)
+            if (newSelect_X > -1 && newSelect_X < sizeX)
             {
                 _selectedIndex.X = newSelect_X;
             }
 
-            if (newSelect_Y > -1 && newSelect_Y < 3)
+            if (newSelect_Y > -1 && newSelect_Y < sizeY)
             {
                 _selectedIndex.Y = newSelect_Y;
             }
@@ -302,22 +305,74 @@ namespace _8_puzzel
 
         private void BtnLeft_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("button Left clicked");
+            var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
+            var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+            if (_currentIndexNoneImage.Y + 1 < sizeY)
+            {
+                _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1];
+
+                Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+
+                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
+                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1] = null;
+
+                _currentIndexNoneImage.Y += 1;
+            }
         }
 
         private void BtnRight_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("button Right clicked");
+            var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
+            var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+            if (_currentIndexNoneImage.Y - 1 >= 0)
+            {
+                _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1];
+
+                Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+
+                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
+                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1] = null;
+
+                _currentIndexNoneImage.Y -= 1;
+            }
         }
 
         private void BtnDown_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("button Down clicked");
+            var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
+            var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+            if (_currentIndexNoneImage.X - 1 >= 0)
+            {
+                _selectedBitmap = _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y];
+
+                Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+
+                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
+                _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y] = null;
+
+                _currentIndexNoneImage.X -= 1;
+            }
         }
 
         private void BtnUp_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("button Up clicked");
+            var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
+            var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+            if (_currentIndexNoneImage.X + 1 < sizeX)
+            {
+                _selectedBitmap = _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y];
+
+                Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+
+                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
+                _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y] = null;
+
+                _currentIndexNoneImage.X += 1;
+            }
         }
 
         private void BtnPlay_Click(object sender, RoutedEventArgs e)
