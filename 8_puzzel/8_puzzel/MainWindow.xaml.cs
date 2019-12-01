@@ -40,6 +40,7 @@ namespace _8_puzzel
         const int sizeY = 3;
         bool inGame = false;
         bool chooseImage = false;
+        bool isShuffle = false;
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _images = new Image[sizeX, sizeY];
@@ -454,73 +455,77 @@ namespace _8_puzzel
                 MessageBox.Show("button play clicked");
 
                 //tráo đổi
-                var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
-                var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
-                var i = 0;
-                Random rnd = new Random();
-                while (i < 100)
+                if (!isShuffle)
                 {
-                    switch(rnd.Next(1,5)) // creates a number between 1 and 4
+                    var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
+                    var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+                    var i = 0;
+                    Random rnd = new Random();
+                    while (i < 100)
                     {
-                        case 1: //left
-                            if (_currentIndexNoneImage.Y + 1 < sizeY)
-                            {
-                                _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1];
+                        switch (rnd.Next(1, 5)) // creates a number between 1 and 4
+                        {
+                            case 1: //left
+                                if (_currentIndexNoneImage.Y + 1 < sizeY)
+                                {
+                                    _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1];
 
-                                Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
-                                Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+                                    Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                                    Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
-                                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
-                                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1] = null;
+                                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
+                                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1] = null;
 
-                                _currentIndexNoneImage.Y += 1;
-                            }
-                            break;
-                        case 2:
-                            if (_currentIndexNoneImage.Y - 1 >= 0)
-                            {
-                                _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1];
+                                    _currentIndexNoneImage.Y += 1;
+                                }
+                                break;
+                            case 2:
+                                if (_currentIndexNoneImage.Y - 1 >= 0)
+                                {
+                                    _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1];
 
-                                Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
-                                Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+                                    Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                                    Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
-                                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
-                                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1] = null;
+                                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
+                                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1] = null;
 
-                                _currentIndexNoneImage.Y -= 1;
-                            }
-                            break;
-                        case 3:
-                            if (_currentIndexNoneImage.X - 1 >= 0)
-                            {
-                                _selectedBitmap = _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y];
+                                    _currentIndexNoneImage.Y -= 1;
+                                }
+                                break;
+                            case 3:
+                                if (_currentIndexNoneImage.X - 1 >= 0)
+                                {
+                                    _selectedBitmap = _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y];
 
-                                Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
-                                Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+                                    Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                                    Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
-                                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
-                                _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y] = null;
+                                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
+                                    _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y] = null;
 
-                                _currentIndexNoneImage.X -= 1;
-                            }
-                            break;
-                        case 4:
-                            if (_currentIndexNoneImage.X + 1 < sizeX)
-                            {
-                                _selectedBitmap = _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y];
+                                    _currentIndexNoneImage.X -= 1;
+                                }
+                                break;
+                            case 4:
+                                if (_currentIndexNoneImage.X + 1 < sizeX)
+                                {
+                                    _selectedBitmap = _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y];
 
-                                Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
-                                Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+                                    Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                                    Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
-                                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
-                                _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y] = null;
+                                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
+                                    _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y] = null;
 
-                                _currentIndexNoneImage.X += 1;
-                            }
-                            break;
+                                    _currentIndexNoneImage.X += 1;
+                                }
+                                break;
 
+                        }
+                        i++;
                     }
-                    i++;
+                    isShuffle = !isShuffle;
                 }
 
                 //cài thời gian
