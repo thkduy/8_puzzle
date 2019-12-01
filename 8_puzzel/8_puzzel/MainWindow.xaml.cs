@@ -38,6 +38,8 @@ namespace _8_puzzel
         int[] cot = { 0, 0, -1, 1 };
         const int sizeX = 3;
         const int sizeY = 3;
+        bool inGame = false;
+        bool chooseImage = false;
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _images = new Image[sizeX, sizeY];
@@ -56,6 +58,8 @@ namespace _8_puzzel
 
         private void New_Click(object sender, RoutedEventArgs e)
         {
+            inGame = false;
+            chooseImage = false;
             var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
 
             previewImage.Width = 360;
@@ -77,67 +81,75 @@ namespace _8_puzzel
 
         private void BtnChooseImg_Click(object sender, RoutedEventArgs e)
         {
-            var screen = new OpenFileDialog();
-
-            if (screen.ShowDialog() == true)
+            if (chooseImage == false)
             {
-                var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border //223
-                var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border //149
-                //MessageBox.Show($"{width} - {height}");
-                
-                var source = new BitmapImage(new Uri(screen.FileName, UriKind.Absolute));
-                
-                previewImage.Width = 360;
-                previewImage.Height = 230;
-                previewImage.Source = source;
+                var screen = new OpenFileDialog();
 
-                Canvas.SetLeft(previewImage, 0);
-                Canvas.SetTop(previewImage, 0);
-
-                // Bat dau cat thanh 9 manh
-                var h = (int)(source.Height / 3);//100
-                var w = (int)(source.Width / 3);//125
-
-                for (int i = 0; i < sizeX; i++)
+                if (screen.ShowDialog() == true)
                 {
-                    for (int j = 0; j < sizeY; j++)
+                    chooseImage = true;
+                    var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border //223
+                    var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border //149
+                                                                                 //MessageBox.Show($"{width} - {height}");
+
+                    var source = new BitmapImage(new Uri(screen.FileName, UriKind.Absolute));
+
+                    previewImage.Width = 360;
+                    previewImage.Height = 230;
+                    previewImage.Source = source;
+
+                    Canvas.SetLeft(previewImage, 0);
+                    Canvas.SetTop(previewImage, 0);
+
+                    // Bat dau cat thanh 9 manh
+                    var h = (int)(source.Height / 3);//100
+                    var w = (int)(source.Width / 3);//125
+
+                    for (int i = 0; i < sizeX; i++)
                     {
-
-                        if (!((i == sizeX - 1) && (j == sizeY - 1)))
+                        for (int j = 0; j < sizeY; j++)
                         {
-                            //MessageBox.Show($"{h}-{w}");
-                            //Debug.WriteLine($"Len = {len}");
-                            var rect = new Int32Rect(j * w, i * h, w, h);
-                            var cropBitmap = new CroppedBitmap(source, rect);
 
-                            var cropImage = new Image();
-                            cropImage.Stretch = Stretch.Fill;
-                            cropImage.Width = width;
-                            cropImage.Height = height;
-                            cropImage.Source = cropBitmap;
-                            cropImage.Tag = new Tuple<int, int>(i, j);
-                            _images[i, j] = cropImage; // tham chiếu tới crop image
-                            gamefieldCanvas.Children.Add(cropImage);
-                            Canvas.SetLeft(cropImage, j * (width + 2));
-                            Canvas.SetTop(cropImage, i * (height + 2));
-
-                            if (i == 0 && j == 0)
+                            if (!((i == sizeX - 1) && (j == sizeY - 1)))
                             {
-                                startLeft = Canvas.GetLeft(cropImage);
-                                startTop = Canvas.GetTop(cropImage);
-                            }
+                                //MessageBox.Show($"{h}-{w}");
+                                //Debug.WriteLine($"Len = {len}");
+                                var rect = new Int32Rect(j * w, i * h, w, h);
+                                var cropBitmap = new CroppedBitmap(source, rect);
 
-                            cropImage.MouseLeftButtonDown += CropImage_MouseLeftButtonDown;
-                            cropImage.MouseLeftButtonUp += CropImage_MouseLeftButtonUp;
-                            cropImage.MouseMove += CropImage_MouseMove;
+                                var cropImage = new Image();
+                                cropImage.Stretch = Stretch.Fill;
+                                cropImage.Width = width;
+                                cropImage.Height = height;
+                                cropImage.Source = cropBitmap;
+                                cropImage.Tag = new Tuple<int, int>(i, j);
+                                _images[i, j] = cropImage; // tham chiếu tới crop image
+                                gamefieldCanvas.Children.Add(cropImage);
+                                Canvas.SetLeft(cropImage, j * (width + 2));
+                                Canvas.SetTop(cropImage, i * (height + 2));
+
+                                if (i == 0 && j == 0)
+                                {
+                                    startLeft = Canvas.GetLeft(cropImage);
+                                    startTop = Canvas.GetTop(cropImage);
+                                }
+
+                                cropImage.MouseLeftButtonDown += CropImage_MouseLeftButtonDown;
+                                cropImage.MouseLeftButtonUp += CropImage_MouseLeftButtonUp;
+                                cropImage.MouseMove += CropImage_MouseMove;
+                            }
                         }
                     }
-                }
-                _currentIndexNoneImage.X = sizeX - 1;
-                _currentIndexNoneImage.Y = sizeY - 1;
+                    _currentIndexNoneImage.X = sizeX - 1;
+                    _currentIndexNoneImage.Y = sizeY - 1;
 
-                _selectedIndex.X = -1;
-                _selectedIndex.Y = -1;
+                    _selectedIndex.X = -1;
+                    _selectedIndex.Y = -1;
+                }
+            }
+            else
+            {
+                MessageBox.Show("You have selected the photo. Please click new game");
             }
         }
 
@@ -293,6 +305,7 @@ namespace _8_puzzel
 
         private void BtnPause_Click(object sender, RoutedEventArgs e)
         {
+            inGame = false;
             btnPlay.Visibility = Visibility.Visible;
             btnPause.Visibility = Visibility.Hidden;
             MessageBox.Show("button Pause clicked");
@@ -305,81 +318,117 @@ namespace _8_puzzel
 
         private void BtnLeft_Click(object sender, RoutedEventArgs e)
         {
-            var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
-            var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
-            if (_currentIndexNoneImage.Y + 1 < sizeY)
+            if (inGame == true)
             {
-                _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1];
+                var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
+                var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+                if (_currentIndexNoneImage.Y + 1 < sizeY)
+                {
+                    _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1];
 
-                Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
-                Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+                    Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                    Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
-                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
-                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1] = null;
+                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
+                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1] = null;
 
-                _currentIndexNoneImage.Y += 1;
+                    _currentIndexNoneImage.Y += 1;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Game has not been started");
             }
         }
 
         private void BtnRight_Click(object sender, RoutedEventArgs e)
         {
-            var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
-            var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
-            if (_currentIndexNoneImage.Y - 1 >= 0)
+            if (inGame == true)
             {
-                _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1];
+                var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
+                var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+                if (_currentIndexNoneImage.Y - 1 >= 0)
+                {
+                    _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1];
 
-                Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
-                Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+                    Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                    Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
-                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
-                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1] = null;
+                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
+                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1] = null;
 
-                _currentIndexNoneImage.Y -= 1;
+                    _currentIndexNoneImage.Y -= 1;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Game has not been started");
             }
         }
 
         private void BtnDown_Click(object sender, RoutedEventArgs e)
         {
-            var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
-            var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
-            if (_currentIndexNoneImage.X - 1 >= 0)
+            if (inGame == true)
             {
-                _selectedBitmap = _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y];
+                var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
+                var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+                if (_currentIndexNoneImage.X - 1 >= 0)
+                {
+                    _selectedBitmap = _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y];
 
-                Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
-                Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+                    Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                    Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
-                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
-                _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y] = null;
+                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
+                    _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y] = null;
 
-                _currentIndexNoneImage.X -= 1;
+                    _currentIndexNoneImage.X -= 1;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Game has not been started");
             }
         }
 
         private void BtnUp_Click(object sender, RoutedEventArgs e)
         {
-            var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
-            var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
-            if (_currentIndexNoneImage.X + 1 < sizeX)
+            if (inGame == true)
             {
-                _selectedBitmap = _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y];
+                var width = (int)(gamefieldCanvas.ActualWidth / sizeX);//tru di do rong cua border
+                var height = (int)(gamefieldCanvas.ActualHeight / sizeY) - 1;//tru di do rong cua border
+                if (_currentIndexNoneImage.X + 1 < sizeX)
+                {
+                    _selectedBitmap = _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y];
 
-                Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
-                Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+                    Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                    Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
-                _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
-                _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y] = null;
+                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
+                    _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y] = null;
 
-                _currentIndexNoneImage.X += 1;
+                    _currentIndexNoneImage.X += 1;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Game has not been started");
             }
         }
 
         private void BtnPlay_Click(object sender, RoutedEventArgs e)
         {
-            btnPlay.Visibility = Visibility.Hidden;
-            btnPause.Visibility = Visibility.Visible;
-            MessageBox.Show("button play clicked;");
+            if (chooseImage == true)
+            {
+                inGame = true;
+                btnPlay.Visibility = Visibility.Hidden;
+                btnPause.Visibility = Visibility.Visible;
+                MessageBox.Show("button play clicked");
+            }
+            else
+            {
+                MessageBox.Show("You have not selected a photo");
+            }
         }
     }
 }
