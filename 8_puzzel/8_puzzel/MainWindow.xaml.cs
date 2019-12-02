@@ -462,6 +462,7 @@ namespace _8_puzzel
             }
             else
             {
+                
                 MessageBox.Show("Game has not been started");
             }
         }
@@ -498,6 +499,13 @@ namespace _8_puzzel
             {
                 MessageBox.Show("Game has not been started");
             }
+        }
+
+        private bool CheckWinState()
+        {
+
+            return (!gamefieldCanvas.Children.Contains(_images[2, 2]));  //Nếu thắng - true. Chưa thắng - false
+          
         }
 
         private void BtnPlay_Click(object sender, RoutedEventArgs e)
@@ -582,7 +590,6 @@ namespace _8_puzzel
                     }
                     isShuffle = !isShuffle;
                 }
-
                 _time = TimeSpan.FromSeconds(180);
                 _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
                 {
@@ -591,14 +598,37 @@ namespace _8_puzzel
                     {
                         _timer.Stop();
                         MessageBox.Show("You Loose !");
+                        MessageBoxResult result = MessageBox.Show("New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                        switch (result)
+                        {
+                            case MessageBoxResult.Yes:
+                                inGame = false;
+                                chooseImage = false;
+                                var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+
+                                previewImage.Width = 360;
+                                previewImage.Height = 230;
+                                previewImage.Source = none;
+                                for (int i = 0; i < sizeX; i++)
+                                {
+                                    for (int j = 0; j < sizeY; j++)
+                                    {
+                                        gamefieldCanvas.Children.Remove(_images[i, j]);
+                                        _images[i, j] = null;
+                                    }
+                                }
+                                break;
+                            case MessageBoxResult.No:
+                                break;
+                        }
                     }
                     _time = _time.Add(TimeSpan.FromSeconds(-1));
                 }, Application.Current.Dispatcher);
-
                 _timer.Start();
             }
             else
             {
+               string s=  _images[2, 2].Tag.ToString();
                 MessageBox.Show("You have not selected a photo");
             }
         }
