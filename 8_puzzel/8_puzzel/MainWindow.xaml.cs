@@ -38,7 +38,7 @@ namespace _8_puzzel
         int[] dong = { -1, 1, 0, 0 };
         int[] cot = { 0, 0, -1, 1 };
         const int sizeX = 3;
-        const int sizeY = 5;
+        const int sizeY = 3;
         bool inGame = false;
         bool chooseImage = false;
         bool isShuffle = false;
@@ -103,17 +103,14 @@ namespace _8_puzzel
                     var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border //149
 
                     var source = new BitmapImage(new Uri(screen.FileName, UriKind.Absolute));
-
-                    previewImage.Width = 360;
-                    previewImage.Height = 230;
                     previewImage.Source = source;
 
                     Canvas.SetLeft(previewImage, 0);
                     Canvas.SetTop(previewImage, 0);
 
                     // Bat dau cat thanh 9 manh
-                    var h = (int)(source.Height / sizeX);//100
-                    var w = (int)(source.Width / sizeY);//125
+                    var h = (int)(source.Height / sizeX);
+                    var w = (int)(source.Width / sizeY);
 
                     for (int i = 0; i < sizeX; i++)
                     {
@@ -186,9 +183,9 @@ namespace _8_puzzel
 
                 var lastLeft = Canvas.GetLeft(_selectedBitmap);
                 var lastTop = Canvas.GetTop(_selectedBitmap);
-                if(lastLeft + dx <= 2 * (width + 2) && lastLeft + dx >= startLeft )
+                if(lastLeft + dx <= (sizeY - 1) * (width + 2) && lastLeft + dx >= startLeft )
                     Canvas.SetLeft(_selectedBitmap, lastLeft + dx);
-                if(lastTop + dy <= 2 * (height + 2) && lastTop + dy >= startTop)
+                if(lastTop + dy <= (sizeX - 1) * (height + 2) && lastTop + dy >= startTop)
                     Canvas.SetTop(_selectedBitmap, lastTop + dy);
 
                 _lastPosition = position;
@@ -213,7 +210,7 @@ namespace _8_puzzel
             //i là dòng, j là cột
             // lấy vị trí trong mảng của hình vừa được chọn
             //var image = sender as Image;
-            //var (i, j) = image.Tag as Tuple<int, int>;
+            //var (i, j) = _images[(int)_selectedIndex.X,(int)_selectedIndex.Y].Tag as Tuple<int, int>;
             //this.Title = $"a[{i}][{j}]";
 
             //this.Title = $"last position {_lastPosition.X} - {_lastPosition.Y}";
@@ -362,7 +359,6 @@ namespace _8_puzzel
                 case MessageBoxResult.No:
                     break;
             }
-
         }
 
         private void BtnLeft_Click(object sender, RoutedEventArgs e)
@@ -508,7 +504,7 @@ namespace _8_puzzel
                 inGame = true;
                 btnPlay.Visibility = Visibility.Hidden;
                 btnPause.Visibility = Visibility.Visible;
-                MessageBox.Show("button play clicked");
+                //MessageBox.Show("button play clicked");
 
                 //tráo đổi
                 if (!isShuffle)
