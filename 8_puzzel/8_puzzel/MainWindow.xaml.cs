@@ -48,17 +48,27 @@ namespace _8_puzzel
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _images = new Image[sizeX, sizeY];
+            _time = TimeSpan.FromSeconds(180);
         }
 
 
         private void Load_Click(object sender, RoutedEventArgs e)
         {
+            //Load...
+
+            //Sau khi load
+            _timer.Stop();
+            TimerCountDown.Text = "00:03:00";
+            _time = TimeSpan.FromSeconds(180);
             MessageBox.Show("button Load clicked");
         }
 
         private void Help_Click(object sender, RoutedEventArgs e)
         {
+            _timer.Stop();
+            _time = _time - TimeSpan.FromSeconds(0);
             MessageBox.Show("button Help clicked");
+            _timer.Start();   //Sau khi xem help
         }
 
         private void New_Click(object sender, RoutedEventArgs e)
@@ -67,10 +77,14 @@ namespace _8_puzzel
             switch (result)
             {
                 case MessageBoxResult.Yes:
+                    _timer.Stop();
+                    TimerCountDown.Text = "00:03:00";
+                    _time = TimeSpan.FromSeconds(180);
                     inGame = false;
+                    btnPlay.Visibility = Visibility.Visible;
+                    btnPause.Visibility = Visibility.Hidden;
                     chooseImage = false;
                     var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
-
                     previewImage.Width = 360;
                     previewImage.Height = 230;
                     previewImage.Source = none;
@@ -90,7 +104,10 @@ namespace _8_puzzel
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            _timer.Stop();
+            _time = _time - TimeSpan.FromSeconds(0);
             MessageBox.Show("button Save clicked");
+            _timer.Start();   //Sau khi save - tiep tuc
         }
 
         private void BtnChooseImg_Click(object sender, RoutedEventArgs e)
@@ -345,6 +362,7 @@ namespace _8_puzzel
 
         private void BtnPause_Click(object sender, RoutedEventArgs e)
         {
+            _timer.Stop();
             inGame = false;
             btnPlay.Visibility = Visibility.Visible;
             btnPause.Visibility = Visibility.Hidden;
@@ -500,7 +518,7 @@ namespace _8_puzzel
                 MessageBox.Show("Game has not been started");
             }
         }
-
+     
         private bool CheckWinState()
         {
 
@@ -516,7 +534,6 @@ namespace _8_puzzel
                 btnPlay.Visibility = Visibility.Hidden;
                 btnPause.Visibility = Visibility.Visible;
                 //MessageBox.Show("button play clicked");
-
                 //tráo đổi
                 if (!isShuffle)
                 {
@@ -590,7 +607,8 @@ namespace _8_puzzel
                     }
                     isShuffle = !isShuffle;
                 }
-                _time = TimeSpan.FromSeconds(180);
+
+                _time = _time - TimeSpan.FromSeconds(0);
                 _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
                 {
                     TimerCountDown.Text = _time.ToString("c");
