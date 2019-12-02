@@ -15,6 +15,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace _8_puzzel
 {
@@ -23,6 +24,8 @@ namespace _8_puzzel
     /// </summary>
     public partial class MainWindow : Window
     {
+        DispatcherTimer _timer;
+        TimeSpan _time;
         public MainWindow()
         {
             InitializeComponent();
@@ -580,7 +583,19 @@ namespace _8_puzzel
                     isShuffle = !isShuffle;
                 }
 
-                //cài thời gian
+                _time = TimeSpan.FromSeconds(180);
+                _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
+                {
+                    TimerCountDown.Text = _time.ToString("c");
+                    if (_time == TimeSpan.Zero)
+                    {
+                        _timer.Stop();
+                        MessageBox.Show("You Loose !");
+                    }
+                    _time = _time.Add(TimeSpan.FromSeconds(-1));
+                }, Application.Current.Dispatcher);
+
+                _timer.Start();
             }
             else
             {
