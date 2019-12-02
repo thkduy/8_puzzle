@@ -15,7 +15,6 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Threading;
 
 namespace _8_puzzel
 {
@@ -24,15 +23,9 @@ namespace _8_puzzel
     /// </summary>
     public partial class MainWindow : Window
     {
-        DispatcherTimer _timer;
-        TimeSpan _time;
-
         public MainWindow()
         {
             InitializeComponent();
-
-            _time = TimeSpan.FromSeconds(180);
-         
         }
 
         Image [,] _images;
@@ -355,7 +348,6 @@ namespace _8_puzzel
             inGame = false;
             btnPlay.Visibility = Visibility.Visible;
             btnPause.Visibility = Visibility.Hidden;
-            _timer.Stop();
             MessageBox.Show("button Pause clicked");
         }
 
@@ -511,7 +503,6 @@ namespace _8_puzzel
 
         private void BtnPlay_Click(object sender, RoutedEventArgs e)
         {
-           
             if (chooseImage == true)
             {
                 inGame = true;
@@ -593,14 +584,7 @@ namespace _8_puzzel
                     isShuffle = !isShuffle;
                 }
 
-                _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
-                {
-                    TimeCountDown.Text = _time.ToString("c");
-                    if (_time == TimeSpan.Zero) _timer.Stop();
-                    _time = _time.Add(TimeSpan.FromSeconds(-1));
-                }, Application.Current.Dispatcher);
-                _timer.Start();
-
+                //cài thời gian
             }
             else
             {
