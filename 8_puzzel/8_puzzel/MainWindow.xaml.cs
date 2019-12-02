@@ -62,12 +62,15 @@ namespace _8_puzzel
 
             _selectedIndex.X = -1;
             _selectedIndex.Y = -1;
+            _time = TimeSpan.FromSeconds(180);
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             if (inGame == true)
             {
+                _timer.Stop();
+                _time = _time - TimeSpan.FromSeconds(0);
                 string filename = "save.txt";
                 var writer = new StreamWriter(filename);
                 // Dong dau tien la luot di hien tai
@@ -76,7 +79,6 @@ namespace _8_puzzel
                 writer.WriteLine("");
                 writer.Write($"{_currentIndexNoneImage.Y}");
                 writer.WriteLine("");
-                MessageBox.Show("Game is saved");
                 for (int i = 0; i < sizeX; i++)
                 {
                     for (int j = 0; j < sizeY; j++)
@@ -98,6 +100,8 @@ namespace _8_puzzel
                     writer.WriteLine("");
                 }
                 writer.Close();
+                MessageBox.Show("Game is saved");
+                _timer.Start();   //Sau khi save - tiep tuc
             }
             else
             {
@@ -202,11 +206,21 @@ namespace _8_puzzel
             //        }
             //    }
             //}
+            //Load...
+
+            //Sau khi load
+            _timer.Stop();
+            TimerCountDown.Text = "00:03:00";
+            _time = TimeSpan.FromSeconds(180);
+            MessageBox.Show("button Load clicked");
         }
 
         private void Help_Click(object sender, RoutedEventArgs e)
         {
+            _timer.Stop();
+            _time = _time - TimeSpan.FromSeconds(0);
             MessageBox.Show("button Help clicked");
+            _timer.Start();   //Sau khi xem help
         }
 
         private void New_Click(object sender, RoutedEventArgs e)
@@ -215,10 +229,14 @@ namespace _8_puzzel
             switch (result)
             {
                 case MessageBoxResult.Yes:
+                    _timer.Stop();
+                    TimerCountDown.Text = "00:03:00";
+                    _time = TimeSpan.FromSeconds(180);
                     inGame = false;
+                    btnPlay.Visibility = Visibility.Visible;
+                    btnPause.Visibility = Visibility.Hidden;
                     chooseImage = false;
                     var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
-
                     previewImage.Width = 360;
                     previewImage.Height = 230;
                     previewImage.Source = none;
@@ -484,6 +502,7 @@ namespace _8_puzzel
 
         private void BtnPause_Click(object sender, RoutedEventArgs e)
         {
+            _timer.Stop();
             inGame = false;
             btnPlay.Visibility = Visibility.Visible;
             btnPause.Visibility = Visibility.Hidden;
@@ -598,6 +617,7 @@ namespace _8_puzzel
             }
             else
             {
+                
                 MessageBox.Show("Game has not been started");
             }
         }
@@ -634,6 +654,13 @@ namespace _8_puzzel
                 MessageBox.Show("Game has not been started");
             }
         }
+     
+        private bool CheckWinState()
+        {
+
+            return (!gamefieldCanvas.Children.Contains(_images[2, 2]));  //Nếu thắng - true. Chưa thắng - false
+          
+        }
 
         private void BtnPlay_Click(object sender, RoutedEventArgs e)
         {
@@ -643,7 +670,6 @@ namespace _8_puzzel
                 btnPlay.Visibility = Visibility.Hidden;
                 btnPause.Visibility = Visibility.Visible;
                 //MessageBox.Show("button play clicked");
-
                 //tráo đổi
                 if (!isShuffle)
                 {
@@ -718,7 +744,7 @@ namespace _8_puzzel
                     isShuffle = !isShuffle;
                 }
 
-                _time = TimeSpan.FromSeconds(180);
+                _time = _time - TimeSpan.FromSeconds(0);
                 _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
                 {
                     TimerCountDown.Text = _time.ToString("c");
@@ -726,14 +752,37 @@ namespace _8_puzzel
                     {
                         _timer.Stop();
                         MessageBox.Show("You Loose !");
+                        MessageBoxResult result = MessageBox.Show("New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                        switch (result)
+                        {
+                            case MessageBoxResult.Yes:
+                                inGame = false;
+                                chooseImage = false;
+                                var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+
+                                previewImage.Width = 360;
+                                previewImage.Height = 230;
+                                previewImage.Source = none;
+                                for (int i = 0; i < sizeX; i++)
+                                {
+                                    for (int j = 0; j < sizeY; j++)
+                                    {
+                                        gamefieldCanvas.Children.Remove(_images[i, j]);
+                                        _images[i, j] = null;
+                                    }
+                                }
+                                break;
+                            case MessageBoxResult.No:
+                                break;
+                        }
                     }
                     _time = _time.Add(TimeSpan.FromSeconds(-1));
                 }, Application.Current.Dispatcher);
-
                 _timer.Start();
             }
             else
             {
+               string s=  _images[2, 2].Tag.ToString();
                 MessageBox.Show("You have not selected a photo");
             }
         }
