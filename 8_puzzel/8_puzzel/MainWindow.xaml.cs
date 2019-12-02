@@ -115,12 +115,9 @@ namespace _8_puzzel
             int checkLoad = 0;
             Image[,] _imagesTemp = new Image[sizeX, sizeY];
             _imagesTemp = _images;
-            //_images = new Image[sizeX, sizeY];
             Point _currentIndexNoneImageTemp = new Point();
             _currentIndexNoneImageTemp = _currentIndexNoneImage;
             string _currentDirectionTemp = _currentDirection;
-            //_currentIndexNoneImageTemp.X = _currentIndexNoneImage.X;
-            //_currentIndexNoneImageTemp.Y = _currentIndexNoneImage.Y;
             try
             {
                 var screen = new OpenFileDialog();
@@ -137,10 +134,15 @@ namespace _8_puzzel
                             new string[] { " " }, StringSplitOptions.None);
                         // Model
                         int count = 0;
+
                         for (int j = 0; j < sizeY; j++)
                         {
                             if (int.Parse(tokens[count]) != -1)
-                                _images[i, j].Tag = new Tuple<int, int>(int.Parse(tokens[count]), int.Parse(tokens[count + 1]));
+                            {
+                                var Temp = new Tuple<int, int>(1, 2);
+                                // _images[i, j].Tag = new Tuple<int, int>(int.Parse(tokens[count]), int.Parse(tokens[count + 1]));
+                                _images[i, j].Tag = Temp;
+                            }
                             count += 2;
                         }
                     }
@@ -156,7 +158,7 @@ namespace _8_puzzel
                 _currentDirection = _currentDirectionTemp;
                 MessageBox.Show("Sai file");
             }
-            //if(checkLoad == 1)
+            //if (checkLoad == 1)
             //{
             //    chooseImage = true;
             //    var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border //223
@@ -188,7 +190,7 @@ namespace _8_puzzel
             //                cropImage.Height = height;
             //                cropImage.Source = cropBitmap;
             //                cropImage.Tag = new Tuple<int, int>(i, j);
-            //                for (int m = 0; m < sizeX; m++) 
+            //                for (int m = 0; m < sizeX; m++)
             //                {
             //                    for (int n = 0; n < sizeY; n++)
             //                    {
@@ -206,13 +208,11 @@ namespace _8_puzzel
             //        }
             //    }
             //}
-            //Load...
 
             //Sau khi load
-            _timer.Stop();
-            TimerCountDown.Text = "00:03:00";
-            _time = TimeSpan.FromSeconds(180);
-            MessageBox.Show("button Load clicked");
+            //_timer.Stop();
+            //TimerCountDown.Text = "00:03:00";
+            //_time = TimeSpan.FromSeconds(180);
         }
 
         private void Help_Click(object sender, RoutedEventArgs e)
@@ -690,7 +690,6 @@ namespace _8_puzzel
                                     Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
                                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
-                                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1] = null;
 
                                     _currentIndexNoneImage.Y += 1;
                                 }
@@ -704,7 +703,6 @@ namespace _8_puzzel
                                     Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
                                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
-                                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1] = null;
 
                                     _currentIndexNoneImage.Y -= 1;
                                 }
@@ -718,7 +716,6 @@ namespace _8_puzzel
                                     Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
                                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
-                                    _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y] = null;
 
                                     _currentIndexNoneImage.X -= 1;
                                 }
@@ -732,7 +729,6 @@ namespace _8_puzzel
                                     Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
                                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
-                                    _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y] = null;
 
                                     _currentIndexNoneImage.X += 1;
                                 }
