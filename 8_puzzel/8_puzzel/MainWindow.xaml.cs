@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,15 +46,162 @@ namespace _8_puzzel
         bool inGame = false;
         bool chooseImage = false;
         bool isShuffle = false;
+        string _currentDirection = null;
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _images = new Image[sizeX, sizeY];
+
+            //for (int i = 0; i < sizeX; i++)
+            //{
+            //    for (int j = 0; j < sizeY; j++)
+            //        _images[i, j].Tag = new Tuple<int, int>(i, j);
+            //}
+
+            _currentIndexNoneImage.X = sizeX - 1;
+            _currentIndexNoneImage.Y = sizeY - 1;
+
+            _selectedIndex.X = -1;
+            _selectedIndex.Y = -1;
         }
 
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            if (inGame == true)
+            {
+                string filename = "save.txt";
+                var writer = new StreamWriter(filename);
+                // Dong dau tien la luot di hien tai
+                writer.WriteLine(_currentDirection);
+                writer.Write($"{_currentIndexNoneImage.X}");
+                writer.WriteLine("");
+                writer.Write($"{_currentIndexNoneImage.Y}");
+                writer.WriteLine("");
+                MessageBox.Show("Game is saved");
+                for (int i = 0; i < sizeX; i++)
+                {
+                    for (int j = 0; j < sizeY; j++)
+                    {
+                        if (i == _currentIndexNoneImage.X && j == _currentIndexNoneImage.Y)
+                        {
+                            writer.Write("-1 ");
+                            writer.Write("-1");
+                        }
+                        else
+                        {
+                            var (h, k) = _images[i, j].Tag as Tuple<int, int>;
+                            writer.Write($"{h} ");
+                            writer.Write($"{k}");
+                        }
+                        if(j != sizeY - 1)
+                            writer.Write(" ");
+                    }
+                    writer.WriteLine("");
+                }
+                writer.Close();
+            }
+            else
+            {
+                MessageBox.Show("Game has not been started");
+            }
+
+        }
 
         private void Load_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("button Load clicked");
+            int checkLoad = 0;
+            Image[,] _imagesTemp = new Image[sizeX, sizeY];
+            _imagesTemp = _images;
+            //_images = new Image[sizeX, sizeY];
+            Point _currentIndexNoneImageTemp = new Point();
+            _currentIndexNoneImageTemp = _currentIndexNoneImage;
+            string _currentDirectionTemp = _currentDirection;
+            //_currentIndexNoneImageTemp.X = _currentIndexNoneImage.X;
+            //_currentIndexNoneImageTemp.Y = _currentIndexNoneImage.Y;
+            try
+            {
+                var screen = new OpenFileDialog();
+                if (screen.ShowDialog() == true)
+                {
+                    var filename = screen.FileName;
+                    var reader = new StreamReader(filename);
+                    _currentDirection = reader.ReadLine();
+                    _currentIndexNoneImage.X = int.Parse(reader.ReadLine());
+                    _currentIndexNoneImage.Y = int.Parse(reader.ReadLine());
+                    for (int i = 0; i < sizeX; i++)
+                    {
+                        var tokens = reader.ReadLine().Split(
+                            new string[] { " " }, StringSplitOptions.None);
+                        // Model
+                        int count = 0;
+                        for (int j = 0; j < sizeY; j++)
+                        {
+                            if (int.Parse(tokens[count]) != -1)
+                                _images[i, j].Tag = new Tuple<int, int>(int.Parse(tokens[count]), int.Parse(tokens[count + 1]));
+                            count += 2;
+                        }
+                    }
+                    checkLoad = 1;
+                    MessageBox.Show("Game is loaded");
+
+                }
+            }
+            catch
+            {
+                _images = _imagesTemp;
+                _currentIndexNoneImage = _currentIndexNoneImageTemp;
+                _currentDirection = _currentDirectionTemp;
+                MessageBox.Show("Sai file");
+            }
+            //if(checkLoad == 1)
+            //{
+            //    chooseImage = true;
+            //    var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border //223
+            //    var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border //149
+
+            //    var source = new BitmapImage(new Uri(_currentDirection, UriKind.Absolute));
+            //    previewImage.Source = source;
+
+            //    Canvas.SetLeft(previewImage, 0);
+            //    Canvas.SetTop(previewImage, 0);
+
+            //    // Bat dau cat thanh 9 manh
+            //    var h = (int)(source.Height / sizeX);
+            //    var w = (int)(source.Width / sizeY);
+
+            //    for (int i = 0; i < sizeX; i++)
+            //    {
+            //        for (int j = 0; j < sizeY; j++)
+            //        {
+
+            //            if (!((i == sizeX - 1) && (j == sizeY - 1)))
+            //            {
+            //                var rect = new Int32Rect(j * w, i * h, w, h);
+            //                var cropBitmap = new CroppedBitmap(source, rect);
+
+            //                var cropImage = new Image();
+            //                cropImage.Stretch = Stretch.Fill;
+            //                cropImage.Width = width;
+            //                cropImage.Height = height;
+            //                cropImage.Source = cropBitmap;
+            //                cropImage.Tag = new Tuple<int, int>(i, j);
+            //                for (int m = 0; m < sizeX; m++) 
+            //                {
+            //                    for (int n = 0; n < sizeY; n++)
+            //                    {
+            //                        var (item1, item2) = _images[m, n].Tag as Tuple<int, int>;
+            //                        if (item1 == i && item2 == j)
+            //                        {
+            //                            _images[m, n] = cropImage; // tham chiếu tới crop image
+            //                            gamefieldCanvas.Children.Add(cropImage);
+            //                            Canvas.SetLeft(cropImage, n * (width + 2));
+            //                            Canvas.SetTop(cropImage, m * (height + 2));
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         private void Help_Click(object sender, RoutedEventArgs e)
@@ -88,11 +236,6 @@ namespace _8_puzzel
             }
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("button Save clicked");
-        }
-
         private void BtnChooseImg_Click(object sender, RoutedEventArgs e)
         {
             if (chooseImage == false)
@@ -106,6 +249,7 @@ namespace _8_puzzel
                     var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border //149
 
                     var source = new BitmapImage(new Uri(screen.FileName, UriKind.Absolute));
+                    _currentDirection = screen.FileName;
                     previewImage.Source = source;
 
                     Canvas.SetLeft(previewImage, 0);
@@ -119,21 +263,20 @@ namespace _8_puzzel
                     {
                         for (int j = 0; j < sizeY; j++)
                         {
+                            var rect = new Int32Rect(j * w, i * h, w, h);
+                            var cropBitmap = new CroppedBitmap(source, rect);
 
+                            var cropImage = new Image();
+                            cropImage.Stretch = Stretch.Fill;
+                            cropImage.Width = width;
+                            cropImage.Height = height;
+                            cropImage.Source = cropBitmap;
+                            cropImage.Tag = new Tuple<int, int>(i, j);
+                            _images[i, j] = cropImage; // tham chiếu tới crop image
                             if (!((i == sizeX - 1) && (j == sizeY - 1)))
                             {
                                 //MessageBox.Show($"{h}-{w}");
                                 //Debug.WriteLine($"Len = {len}");
-                                var rect = new Int32Rect(j * w, i * h, w, h);
-                                var cropBitmap = new CroppedBitmap(source, rect);
-
-                                var cropImage = new Image();
-                                cropImage.Stretch = Stretch.Fill;
-                                cropImage.Width = width;
-                                cropImage.Height = height;
-                                cropImage.Source = cropBitmap;
-                                cropImage.Tag = new Tuple<int, int>(i, j);
-                                _images[i, j] = cropImage; // tham chiếu tới crop image
                                 gamefieldCanvas.Children.Add(cropImage);
                                 Canvas.SetLeft(cropImage, j * (width + 2));
                                 Canvas.SetTop(cropImage, i * (height + 2));
@@ -148,13 +291,9 @@ namespace _8_puzzel
                                 cropImage.MouseLeftButtonUp += CropImage_MouseLeftButtonUp;
                                 cropImage.MouseMove += CropImage_MouseMove;
                             }
+                            
                         }
                     }
-                    _currentIndexNoneImage.X = sizeX - 1;
-                    _currentIndexNoneImage.Y = sizeY - 1;
-
-                    _selectedIndex.X = -1;
-                    _selectedIndex.Y = -1;
                 }
             }
             else
@@ -387,7 +526,6 @@ namespace _8_puzzel
                     story.Begin(this);
 
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
-                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1] = null;
 
                     _currentIndexNoneImage.Y += 1;
                 }
@@ -421,7 +559,6 @@ namespace _8_puzzel
                     story.Begin(this);
 
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
-                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1] = null;
 
                     _currentIndexNoneImage.Y -= 1;
                 }
@@ -455,7 +592,6 @@ namespace _8_puzzel
                     story.Begin(this);
 
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
-                    _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y] = null;
 
                     _currentIndexNoneImage.X -= 1;
                 }
@@ -489,7 +625,6 @@ namespace _8_puzzel
                     story.Begin(this);
 
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
-                    _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y] = null;
 
                     _currentIndexNoneImage.X += 1;
                 }
