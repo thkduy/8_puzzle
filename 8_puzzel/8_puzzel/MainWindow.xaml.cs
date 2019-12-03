@@ -51,12 +51,6 @@ namespace _8_puzzel
         {
             _images = new Image[sizeX, sizeY];
 
-            //for (int i = 0; i < sizeX; i++)
-            //{
-            //    for (int j = 0; j < sizeY; j++)
-            //        _images[i, j].Tag = new Tuple<int, int>(i, j);
-            //}
-
             _currentIndexNoneImage.X = sizeX - 1;
             _currentIndexNoneImage.Y = sizeY - 1;
 
@@ -140,10 +134,7 @@ namespace _8_puzzel
 
                             for (int j = 0; j < sizeY; j++)
                             {
-                                if (int.Parse(tokens[count]) != -1)
-                                {
-                                    _images[i, j].Tag = new Tuple<int, int>(int.Parse(tokens[count]), int.Parse(tokens[count + 1]));
-                                }
+                                _images[i, j].Tag = new Tuple<int, int>(int.Parse(tokens[count]), int.Parse(tokens[count + 1]));
                                 count += 2;
                             }
                         }
@@ -163,6 +154,9 @@ namespace _8_puzzel
                 {
                     inGame = true;
                     chooseImage = true;
+                    var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+                    previewImage.Source = none;
+                    gamefieldCanvas.Children.Clear();
                     var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border //223
                     var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border //149
 
@@ -175,7 +169,7 @@ namespace _8_puzzel
                     // Bat dau cat thanh 9 manh
                     var h = (int)(source.Height / sizeX);
                     var w = (int)(source.Width / sizeY);
-                    gamefieldCanvas.Children.Clear();
+
                     for (int i = 0; i < sizeX; i++)
                     {
                         for (int j = 0; j < sizeY; j++)
@@ -191,20 +185,29 @@ namespace _8_puzzel
                             cropImage.Tag = new Tuple<int, int>(i, j);
                             for (int m = 0; m < sizeX; m++)
                             {
+                                int flag = 0;
                                 for (int n = 0; n < sizeY; n++)
                                 {
-                                    var (item1, item2) = _images[m, n].Tag as Tuple<int, int>;
+                                    var s = _images[m, n].Tag as Tuple<int, int>;
+                                    var item1 = s.Item1;
+                                    var item2 = s.Item2;
                                     if (item1 == i && item2 == j)
                                     {
+                                        flag = 1;
                                         _images[m, n] = cropImage; // tham chiếu tới crop image
+                                        gamefieldCanvas.Children.Add(cropImage);
                                         if (!(m == _currentIndexNoneImage.X && n == _currentIndexNoneImage.Y))
                                         {
-                                            gamefieldCanvas.Children.Add(cropImage);
+
                                             Canvas.SetLeft(cropImage, n * (width + 2));
                                             Canvas.SetTop(cropImage, m * (height + 2));
                                         }
                                     }
+                                    if (flag == 1)
+                                        break;
                                 }
+                                if (flag == 1)
+                                    break;
                             }
                         }
                     }
@@ -234,10 +237,7 @@ namespace _8_puzzel
 
                             for (int j = 0; j < sizeY; j++)
                             {
-                                if (int.Parse(tokens[count]) != -1)
-                                {
-                                    A[i,j] = new Tuple<int, int>(int.Parse(tokens[count]), int.Parse(tokens[count + 1]));
-                                }
+                                A[i, j] = new Tuple<int, int>(int.Parse(tokens[count]), int.Parse(tokens[count + 1]));
                                 count += 2;
                             }
                         }
@@ -254,6 +254,11 @@ namespace _8_puzzel
                 }
                 if(checkLoad == 1)
                 {
+                    inGame = true;
+                    chooseImage = true;
+                    var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+                    previewImage.Source = none;
+                    gamefieldCanvas.Children.Clear();
                     var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border //223
                     var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border //149
 
@@ -287,9 +292,10 @@ namespace _8_puzzel
                                     if (item1 == i && item2 == j)
                                     {
                                         _images[m, n] = cropImage; // tham chiếu tới crop image
+                                        gamefieldCanvas.Children.Add(cropImage);
                                         if (!(m == _currentIndexNoneImage.X && n == _currentIndexNoneImage.Y))
                                         {
-                                            gamefieldCanvas.Children.Add(cropImage);
+
                                             Canvas.SetLeft(cropImage, n * (width + 2));
                                             Canvas.SetTop(cropImage, m * (height + 2));
                                         }
@@ -331,14 +337,6 @@ namespace _8_puzzel
                     var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
                     previewImage.Source = none;
                     gamefieldCanvas.Children.Clear();
-                    //for(int i  = 0 ; i < sizeX ; i++)
-                    //{
-                    //    for(int j = 0; j < sizeY; j++)
-                    //    {
-                    //        _images[i, j] = null;
-                    //    }
-                    //}
-                    //_images = new Image[sizeX, sizeY];
                     _currentIndexNoneImage.X = sizeX - 1;
                     _currentIndexNoneImage.Y = sizeY - 1;
 
@@ -387,6 +385,7 @@ namespace _8_puzzel
                             cropImage.Source = cropBitmap;
                             cropImage.Tag = new Tuple<int, int>(i, j);
                             _images[i, j] = cropImage; // tham chiếu tới crop image
+
                             if (!((i == sizeX - 1) && (j == sizeY - 1)))
                             {
                                 //MessageBox.Show($"{h}-{w}");
@@ -780,20 +779,21 @@ namespace _8_puzzel
                                 if (_currentIndexNoneImage.Y + 1 < sizeY)
                                 {
                                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1];
-
+                                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                                     Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
                                     Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
                                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
                                     _currentIndexNoneImage.Y += 1;
+
                                 }
                                 break;
                             case 2:
                                 if (_currentIndexNoneImage.Y - 1 >= 0)
                                 {
                                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1];
-
+                                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                                     Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
                                     Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
@@ -806,7 +806,7 @@ namespace _8_puzzel
                                 if (_currentIndexNoneImage.X - 1 >= 0)
                                 {
                                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y];
-
+                                    _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                                     Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
                                     Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
@@ -819,7 +819,7 @@ namespace _8_puzzel
                                 if (_currentIndexNoneImage.X + 1 < sizeX)
                                 {
                                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y];
-
+                                    _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                                     Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
                                     Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
@@ -854,14 +854,7 @@ namespace _8_puzzel
                                 previewImage.Width = 360;
                                 previewImage.Height = 230;
                                 previewImage.Source = none;
-                                for (int i = 0; i < sizeX; i++)
-                                {
-                                    for (int j = 0; j < sizeY; j++)
-                                    {
-                                        gamefieldCanvas.Children.Remove(_images[i, j]);
-                                        _images[i, j] = null;
-                                    }
-                                }
+                                gamefieldCanvas.Children.Clear();
                                 break;
                             case MessageBoxResult.No:
                                 break;
