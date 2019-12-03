@@ -118,97 +118,188 @@ namespace _8_puzzel
             Point _currentIndexNoneImageTemp = new Point();
             _currentIndexNoneImageTemp = _currentIndexNoneImage;
             string _currentDirectionTemp = _currentDirection;
-            try
+            // nếu game đang đc chơi
+            if (inGame == true)
             {
-                var screen = new OpenFileDialog();
-                if (screen.ShowDialog() == true)
+                try
                 {
-                    var filename = screen.FileName;
-                    var reader = new StreamReader(filename);
-                    _currentDirection = reader.ReadLine();
-                    _currentIndexNoneImage.X = int.Parse(reader.ReadLine());
-                    _currentIndexNoneImage.Y = int.Parse(reader.ReadLine());
+                    var screen = new OpenFileDialog();
+                    if (screen.ShowDialog() == true)
+                    {
+                        var filename = screen.FileName;
+                        var reader = new StreamReader(filename);
+                        _currentDirection = reader.ReadLine();
+                        _currentIndexNoneImage.X = int.Parse(reader.ReadLine());
+                        _currentIndexNoneImage.Y = int.Parse(reader.ReadLine());
+                        for (int i = 0; i < sizeX; i++)
+                        {
+                            var tokens = reader.ReadLine().Split(
+                                new string[] { " " }, StringSplitOptions.None);
+                            // Model
+                            int count = 0;
+
+                            for (int j = 0; j < sizeY; j++)
+                            {
+                                if (int.Parse(tokens[count]) != -1)
+                                {
+                                    _images[i, j].Tag = new Tuple<int, int>(int.Parse(tokens[count]), int.Parse(tokens[count + 1]));
+                                }
+                                count += 2;
+                            }
+                        }
+                        checkLoad = 1;
+                        MessageBox.Show("Game is loaded");
+
+                    }
+                }
+                catch
+                {
+                    _images = _imagesTemp;
+                    _currentIndexNoneImage = _currentIndexNoneImageTemp;
+                    _currentDirection = _currentDirectionTemp;
+                    MessageBox.Show("Sai file");
+                }
+                if (checkLoad == 1)
+                {
+                    inGame = true;
+                    chooseImage = true;
+                    var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border //223
+                    var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border //149
+
+                    var source = new BitmapImage(new Uri(_currentDirection, UriKind.Absolute));
+                    previewImage.Source = source;
+
+                    Canvas.SetLeft(previewImage, 0);
+                    Canvas.SetTop(previewImage, 0);
+
+                    // Bat dau cat thanh 9 manh
+                    var h = (int)(source.Height / sizeX);
+                    var w = (int)(source.Width / sizeY);
+                    gamefieldCanvas.Children.Clear();
                     for (int i = 0; i < sizeX; i++)
                     {
-                        var tokens = reader.ReadLine().Split(
-                            new string[] { " " }, StringSplitOptions.None);
-                        // Model
-                        int count = 0;
-
                         for (int j = 0; j < sizeY; j++)
                         {
-                            if (int.Parse(tokens[count]) != -1)
+                            var rect = new Int32Rect(j * w, i * h, w, h);
+                            var cropBitmap = new CroppedBitmap(source, rect);
+
+                            var cropImage = new Image();
+                            cropImage.Stretch = Stretch.Fill;
+                            cropImage.Width = width;
+                            cropImage.Height = height;
+                            cropImage.Source = cropBitmap;
+                            cropImage.Tag = new Tuple<int, int>(i, j);
+                            for (int m = 0; m < sizeX; m++)
                             {
-                                var Temp = new Tuple<int, int>(1, 2);
-                                // _images[i, j].Tag = new Tuple<int, int>(int.Parse(tokens[count]), int.Parse(tokens[count + 1]));
-                                _images[i, j].Tag = Temp;
+                                for (int n = 0; n < sizeY; n++)
+                                {
+                                    var (item1, item2) = _images[m, n].Tag as Tuple<int, int>;
+                                    if (item1 == i && item2 == j)
+                                    {
+                                        _images[m, n] = cropImage; // tham chiếu tới crop image
+                                        if (!(m == _currentIndexNoneImage.X && n == _currentIndexNoneImage.Y))
+                                        {
+                                            gamefieldCanvas.Children.Add(cropImage);
+                                            Canvas.SetLeft(cropImage, n * (width + 2));
+                                            Canvas.SetTop(cropImage, m * (height + 2));
+                                        }
+                                    }
+                                }
                             }
-                            count += 2;
                         }
                     }
-                    checkLoad = 1;
-                    MessageBox.Show("Game is loaded");
-
                 }
             }
-            catch
+            // nếu game chưa bắt đầu
+            else
             {
-                _images = _imagesTemp;
-                _currentIndexNoneImage = _currentIndexNoneImageTemp;
-                _currentDirection = _currentDirectionTemp;
-                MessageBox.Show("Sai file");
+                Tuple<int, int>[,] A = new Tuple<int, int>[sizeX, sizeY];
+                try
+                {
+                    var screen = new OpenFileDialog();
+                    if (screen.ShowDialog() == true)
+                    {
+                        var filename = screen.FileName;
+                        var reader = new StreamReader(filename);
+                        _currentDirection = reader.ReadLine();
+                        _currentIndexNoneImage.X = int.Parse(reader.ReadLine());
+                        _currentIndexNoneImage.Y = int.Parse(reader.ReadLine());
+
+                        for (int i = 0; i < sizeX; i++)
+                        {
+                            var tokens = reader.ReadLine().Split(
+                                new string[] { " " }, StringSplitOptions.None);
+                            // Model
+                            int count = 0;
+
+                            for (int j = 0; j < sizeY; j++)
+                            {
+                                if (int.Parse(tokens[count]) != -1)
+                                {
+                                    A[i,j] = new Tuple<int, int>(int.Parse(tokens[count]), int.Parse(tokens[count + 1]));
+                                }
+                                count += 2;
+                            }
+                        }
+                        checkLoad = 1;
+                        MessageBox.Show("Game is loaded");
+                    }
+                }
+                catch
+                {
+                    _images = _imagesTemp;
+                    _currentIndexNoneImage = _currentIndexNoneImageTemp;
+                    _currentDirection = _currentDirectionTemp;
+                    MessageBox.Show("Sai file");
+                }
+                if(checkLoad == 1)
+                {
+                    var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border //223
+                    var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border //149
+
+                    var source = new BitmapImage(new Uri(_currentDirection, UriKind.Absolute));
+                    previewImage.Source = source;
+
+                    Canvas.SetLeft(previewImage, 0);
+                    Canvas.SetTop(previewImage, 0);
+
+                    // Bat dau cat thanh 9 manh
+                    var h = (int)(source.Height / sizeX);
+                    var w = (int)(source.Width / sizeY);
+                    for (int i = 0; i < sizeX; i++)
+                    {
+                        for (int j = 0; j < sizeY; j++)
+                        {
+                            var rect = new Int32Rect(j * w, i * h, w, h);
+                            var cropBitmap = new CroppedBitmap(source, rect);
+
+                            var cropImage = new Image();
+                            cropImage.Stretch = Stretch.Fill;
+                            cropImage.Width = width;
+                            cropImage.Height = height;
+                            cropImage.Source = cropBitmap;
+                            cropImage.Tag = new Tuple<int, int>(i, j);
+                            for (int m = 0; m < sizeX; m++)
+                            {
+                                for (int n = 0; n < sizeY; n++)
+                                {
+                                    var (item1, item2) = A[m, n];
+                                    if (item1 == i && item2 == j)
+                                    {
+                                        _images[m, n] = cropImage; // tham chiếu tới crop image
+                                        if (!(m == _currentIndexNoneImage.X && n == _currentIndexNoneImage.Y))
+                                        {
+                                            gamefieldCanvas.Children.Add(cropImage);
+                                            Canvas.SetLeft(cropImage, n * (width + 2));
+                                            Canvas.SetTop(cropImage, m * (height + 2));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            //if (checkLoad == 1)
-            //{
-            //    chooseImage = true;
-            //    var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border //223
-            //    var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border //149
-
-            //    var source = new BitmapImage(new Uri(_currentDirection, UriKind.Absolute));
-            //    previewImage.Source = source;
-
-            //    Canvas.SetLeft(previewImage, 0);
-            //    Canvas.SetTop(previewImage, 0);
-
-            //    // Bat dau cat thanh 9 manh
-            //    var h = (int)(source.Height / sizeX);
-            //    var w = (int)(source.Width / sizeY);
-
-            //    for (int i = 0; i < sizeX; i++)
-            //    {
-            //        for (int j = 0; j < sizeY; j++)
-            //        {
-
-            //            if (!((i == sizeX - 1) && (j == sizeY - 1)))
-            //            {
-            //                var rect = new Int32Rect(j * w, i * h, w, h);
-            //                var cropBitmap = new CroppedBitmap(source, rect);
-
-            //                var cropImage = new Image();
-            //                cropImage.Stretch = Stretch.Fill;
-            //                cropImage.Width = width;
-            //                cropImage.Height = height;
-            //                cropImage.Source = cropBitmap;
-            //                cropImage.Tag = new Tuple<int, int>(i, j);
-            //                for (int m = 0; m < sizeX; m++)
-            //                {
-            //                    for (int n = 0; n < sizeY; n++)
-            //                    {
-            //                        var (item1, item2) = _images[m, n].Tag as Tuple<int, int>;
-            //                        if (item1 == i && item2 == j)
-            //                        {
-            //                            _images[m, n] = cropImage; // tham chiếu tới crop image
-            //                            gamefieldCanvas.Children.Add(cropImage);
-            //                            Canvas.SetLeft(cropImage, n * (width + 2));
-            //                            Canvas.SetTop(cropImage, m * (height + 2));
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
             //Sau khi load
             //_timer.Stop();
             //TimerCountDown.Text = "00:03:00";
