@@ -295,7 +295,6 @@ namespace _8_puzzel
                                         gamefieldCanvas.Children.Add(cropImage);
                                         if (!(m == _currentIndexNoneImage.X && n == _currentIndexNoneImage.Y))
                                         {
-
                                             Canvas.SetLeft(cropImage, n * (width + 2));
                                             Canvas.SetTop(cropImage, m * (height + 2));
                                         }
@@ -752,11 +751,11 @@ namespace _8_puzzel
         private bool CheckWinState()
         {
 
-            for (int i= 0; i < 3;i++)
+            for (int i = 0; i < sizeX; i++) 
             {
-                for(int j = 0;j <3;j++)
+                for (int j = 0; j < sizeY; j++) 
                 {
-                    if (i==2 && j ==2)
+                    if (i == sizeX - 1 && j == sizeY - 1) 
                     {
                         break;
                     }
