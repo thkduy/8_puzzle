@@ -236,18 +236,23 @@ namespace _8_puzzel
                     btnPlay.Visibility = Visibility.Visible;
                     btnPause.Visibility = Visibility.Hidden;
                     chooseImage = false;
+                    isShuffle = false;
                     var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
-                    previewImage.Width = 360;
-                    previewImage.Height = 230;
                     previewImage.Source = none;
-                    for (int i = 0; i < sizeX; i++)
-                    {
-                        for (int j = 0; j < sizeY; j++)
-                        {
-                            gamefieldCanvas.Children.Remove(_images[i, j]);
-                            _images[i, j] = null;
-                        }
-                    }
+                    gamefieldCanvas.Children.Clear();
+                    //for(int i  = 0 ; i < sizeX ; i++)
+                    //{
+                    //    for(int j = 0; j < sizeY; j++)
+                    //    {
+                    //        _images[i, j] = null;
+                    //    }
+                    //}
+                    //_images = new Image[sizeX, sizeY];
+                    _currentIndexNoneImage.X = sizeX - 1;
+                    _currentIndexNoneImage.Y = sizeY - 1;
+
+                    _selectedIndex.X = -1;
+                    _selectedIndex.Y = -1;
                     break;
                 case MessageBoxResult.No:
                     break;
@@ -423,7 +428,6 @@ namespace _8_puzzel
 
                 //thay đổi trong _images
                 _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
-                _images[(int)_selectedIndex.X, (int)_selectedIndex.Y] = null;
 
                 //doi lai vi tri cua o trong hien tai
                 _currentIndexNoneImage.X = _selectedIndex.X;
@@ -677,7 +681,7 @@ namespace _8_puzzel
                     var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
                     var i = 0;
                     Random rnd = new Random();
-                    while (i < 100)
+                    while (i < 10)
                     {
                         switch (rnd.Next(1, 5)) // creates a number between 1 and 4
                         {
