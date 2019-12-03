@@ -753,8 +753,24 @@ namespace _8_puzzel
         private bool CheckWinState()
         {
 
-            return (!gamefieldCanvas.Children.Contains(_images[2, 2]));  //Nếu thắng - true. Chưa thắng - false
-          
+            for (int i= 0; i < 3;i++)
+            {
+                for(int j = 0;j <3;j++)
+                {
+                    if (i==2 && j ==2)
+                    {
+                        break;
+                    }
+                    var (h, k) = new Tuple<int, int> (i,j);
+                    var (x, y) = _images[i, j].Tag as Tuple<int, int>;
+                    if ((h == x) && (k == y))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private void BtnPlay_Click(object sender, RoutedEventArgs e)
