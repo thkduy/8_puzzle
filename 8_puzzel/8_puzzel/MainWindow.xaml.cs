@@ -636,7 +636,7 @@ namespace _8_puzzel
                     Storyboard.SetTarget(animation, _selectedBitmap);
                     Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.LeftProperty));
                     story.Begin(this);
-
+                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
                     _currentIndexNoneImage.Y += 1;
@@ -669,7 +669,7 @@ namespace _8_puzzel
                     Storyboard.SetTarget(animation, _selectedBitmap);
                     Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.LeftProperty));
                     story.Begin(this);
-
+                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
                     _currentIndexNoneImage.Y -= 1;
@@ -702,7 +702,7 @@ namespace _8_puzzel
                     Storyboard.SetTarget(animation, _selectedBitmap);
                     Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.TopProperty));
                     story.Begin(this);
-
+                    _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
                     _currentIndexNoneImage.X -= 1;
@@ -736,7 +736,7 @@ namespace _8_puzzel
                     Storyboard.SetTarget(animation, _selectedBitmap);
                     Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.TopProperty));
                     story.Begin(this);
-
+                    _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
                     _currentIndexNoneImage.X += 1;
