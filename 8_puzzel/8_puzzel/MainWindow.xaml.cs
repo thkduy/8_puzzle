@@ -298,6 +298,10 @@ namespace _8_puzzel
                                             Canvas.SetLeft(cropImage, n * (width + 2));
                                             Canvas.SetTop(cropImage, m * (height + 2));
                                         }
+
+                                        cropImage.MouseLeftButtonDown += CropImage_MouseLeftButtonDown;
+                                        cropImage.MouseLeftButtonUp += CropImage_MouseLeftButtonUp;
+                                        cropImage.MouseMove += CropImage_MouseMove;
                                     }
                                 }
                             }
@@ -306,6 +310,8 @@ namespace _8_puzzel
                 }
             }
             //Sau khi load
+            btnPlay.Visibility = Visibility.Hidden;
+            btnPause.Visibility = Visibility.Visible;
             //_timer.Stop();
             //TimerCountDown.Text = "00:03:00";
             //_time = TimeSpan.FromSeconds(180);
@@ -516,6 +522,7 @@ namespace _8_puzzel
                 Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
                 //thay đổi trong _images
+                _images[(int)_selectedIndex.X, (int)_selectedIndex.Y] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                 _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
                 //doi lai vi tri cua o trong hien tai
@@ -630,12 +637,21 @@ namespace _8_puzzel
                     animation.From = (_currentIndexNoneImage.Y + 1)*(width + 2);
                     animation.To = _currentIndexNoneImage.Y * (width + 2);
                     animation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
-
+                    animation.FillBehavior = FillBehavior.Stop;
                     var story = new Storyboard();
                     story.Children.Add(animation);
                     Storyboard.SetTarget(animation, _selectedBitmap);
                     Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.LeftProperty));
+                    
                     story.Begin(this);
+                    //xoa di 
+                    gamefieldCanvas.Children.Remove(_selectedBitmap);
+
+                    //in lai
+                    gamefieldCanvas.Children.Add(_selectedBitmap);
+                    Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                    Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
@@ -663,12 +679,21 @@ namespace _8_puzzel
                     animation.From = (_currentIndexNoneImage.Y - 1) * (width + 2);
                     animation.To = _currentIndexNoneImage.Y * (width + 2);
                     animation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
+                    animation.FillBehavior = FillBehavior.Stop;
 
                     var story = new Storyboard();
                     story.Children.Add(animation);
                     Storyboard.SetTarget(animation, _selectedBitmap);
                     Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.LeftProperty));
                     story.Begin(this);
+                    //xoa di 
+                    gamefieldCanvas.Children.Remove(_selectedBitmap);
+
+                    //in lai
+                    gamefieldCanvas.Children.Add(_selectedBitmap);
+                    Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                    Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
@@ -696,12 +721,22 @@ namespace _8_puzzel
                     animation.From = (_currentIndexNoneImage.X - 1) * (height + 2);
                     animation.To = _currentIndexNoneImage.X * (height + 2);
                     animation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
+                    animation.FillBehavior = FillBehavior.Stop;
 
                     var story = new Storyboard();
                     story.Children.Add(animation);
                     Storyboard.SetTarget(animation, _selectedBitmap);
                     Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.TopProperty));
                     story.Begin(this);
+
+                    //xoa di 
+                    gamefieldCanvas.Children.Remove(_selectedBitmap);
+
+                    //in lai
+                    gamefieldCanvas.Children.Add(_selectedBitmap);
+                    Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                    Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+
                     _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
@@ -730,12 +765,21 @@ namespace _8_puzzel
                     animation.From = (_currentIndexNoneImage.X + 1) * (height + 2);
                     animation.To = _currentIndexNoneImage.X * (height + 2);
                     animation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
+                    animation.FillBehavior = FillBehavior.Stop;
 
                     var story = new Storyboard();
                     story.Children.Add(animation);
                     Storyboard.SetTarget(animation, _selectedBitmap);
                     Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.TopProperty));
                     story.Begin(this);
+                    //xoa di 
+                    gamefieldCanvas.Children.Remove(_selectedBitmap);
+
+                    //in lai
+                    gamefieldCanvas.Children.Add(_selectedBitmap);
+                    Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                    Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+
                     _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
@@ -750,7 +794,6 @@ namespace _8_puzzel
      
         private bool CheckWinState()
         {
-
             for (int i = 0; i < sizeX; i++) 
             {
                 for (int j = 0; j < sizeY; j++) 
@@ -786,7 +829,7 @@ namespace _8_puzzel
                     var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
                     var i = 0;
                     Random rnd = new Random();
-                    while (i < 10)
+                    while (i < 100)
                     {
                         switch (rnd.Next(1, 5)) // creates a number between 1 and 4
                         {
@@ -797,6 +840,7 @@ namespace _8_puzzel
                                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                                     Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
                                     Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+
 
                                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
