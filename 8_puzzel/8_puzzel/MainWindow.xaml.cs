@@ -202,6 +202,9 @@ namespace _8_puzzel
                                             Canvas.SetLeft(cropImage, n * (width + 2));
                                             Canvas.SetTop(cropImage, m * (height + 2));
                                         }
+                                        cropImage.MouseLeftButtonDown += CropImage_MouseLeftButtonDown;
+                                        cropImage.MouseLeftButtonUp += CropImage_MouseLeftButtonUp;
+                                        cropImage.MouseMove += CropImage_MouseMove;
                                     }
                                     if (flag == 1)
                                         break;
