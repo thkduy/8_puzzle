@@ -47,6 +47,7 @@ namespace _8_puzzel
         bool chooseImage = false;
         bool isShuffle = false;
         string _currentDirection = null;
+        
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _images = new Image[sizeX, sizeY];
@@ -65,6 +66,7 @@ namespace _8_puzzel
             {
                 _timer.Stop();
                 _time = _time - TimeSpan.FromSeconds(0);
+                int savedTime = (int) _time.TotalSeconds;
                 string filename = "save.txt";
                 var writer = new StreamWriter(filename);
                 // Dong dau tien la luot di hien tai
@@ -537,8 +539,43 @@ namespace _8_puzzel
                 _selectedIndex.X = -1;
                 _selectedIndex.Y = -1;
                 //this.Title = $"a[{_currentIndexNoneImage.X}][{_currentIndexNoneImage.Y}]";
+
+                if( CheckWinState())
+                {
+                    if (CheckWinState())
+                    {
+                        MessageBoxResult result = MessageBox.Show("You win !\n Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                        switch (result)
+                        {
+                            case MessageBoxResult.Yes:
+                                _timer.Stop();
+                                TimerCountDown.Text = "00:03:00";
+                                _time = TimeSpan.FromSeconds(180);
+                                inGame = false;
+                                btnPlay.Visibility = Visibility.Visible;
+                                btnPause.Visibility = Visibility.Hidden;
+                                chooseImage = false;
+                                isShuffle = false;
+                                var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+                                previewImage.Source = none;
+                                gamefieldCanvas.Children.Clear();
+                                _currentIndexNoneImage.X = sizeX - 1;
+                                _currentIndexNoneImage.Y = sizeY - 1;
+
+                                _selectedIndex.X = -1;
+                                _selectedIndex.Y = -1;
+                                break;
+                            case MessageBoxResult.No:
+                                break;
+                        }
+                    }
+
+
+                }
+              
+
             }
-            
+
         }
 
         private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -659,7 +696,40 @@ namespace _8_puzzel
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
                     _currentIndexNoneImage.Y += 1;
+                  
                 }
+
+                if (CheckWinState())
+                {
+                    if (CheckWinState())
+                    {
+                        MessageBoxResult result = MessageBox.Show("You win !. Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                        switch (result)
+                        {
+                            case MessageBoxResult.Yes:
+                                _timer.Stop();
+                                TimerCountDown.Text = "00:03:00";
+                                _time = TimeSpan.FromSeconds(180);
+                                inGame = false;
+                                btnPlay.Visibility = Visibility.Visible;
+                                btnPause.Visibility = Visibility.Hidden;
+                                chooseImage = false;
+                                isShuffle = false;
+                                var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+                                previewImage.Source = none;
+                                gamefieldCanvas.Children.Clear();
+                                _currentIndexNoneImage.X = sizeX - 1;
+                                _currentIndexNoneImage.Y = sizeY - 1;
+
+                                _selectedIndex.X = -1;
+                                _selectedIndex.Y = -1;
+                                break;
+                            case MessageBoxResult.No:
+                                break;
+                        }
+                    }
+                }
+              
             }
             else
             {
@@ -702,6 +772,39 @@ namespace _8_puzzel
 
                     _currentIndexNoneImage.Y -= 1;
                 }
+
+                if (CheckWinState())
+                {
+                    if (CheckWinState())
+                    {
+                        MessageBoxResult result = MessageBox.Show("You win !. Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                        switch (result)
+                        {
+                            case MessageBoxResult.Yes:
+                                _timer.Stop();
+                                TimerCountDown.Text = "00:03:00";
+                                _time = TimeSpan.FromSeconds(180);
+                                inGame = false;
+                                btnPlay.Visibility = Visibility.Visible;
+                                btnPause.Visibility = Visibility.Hidden;
+                                chooseImage = false;
+                                isShuffle = false;
+                                var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+                                previewImage.Source = none;
+                                gamefieldCanvas.Children.Clear();
+                                _currentIndexNoneImage.X = sizeX - 1;
+                                _currentIndexNoneImage.Y = sizeY - 1;
+
+                                _selectedIndex.X = -1;
+                                _selectedIndex.Y = -1;
+                                break;
+                            case MessageBoxResult.No:
+                                break;
+                        }
+                    }
+
+                }
+              
             }
             else
             {
@@ -744,6 +847,41 @@ namespace _8_puzzel
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
                     _currentIndexNoneImage.X -= 1;
+
+                }
+                if (CheckWinState())
+                {
+                    if (CheckWinState())
+                    {
+                        MessageBoxResult result = MessageBox.Show("You win !. Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                        switch (result)
+                        {
+                            case MessageBoxResult.Yes:
+                                _timer.Stop();
+                                TimerCountDown.Text = "00:03:00";
+                                _time = TimeSpan.FromSeconds(180);
+                                inGame = false;
+                                btnPlay.Visibility = Visibility.Visible;
+                                btnPause.Visibility = Visibility.Hidden;
+                                chooseImage = false;
+                                isShuffle = false;
+                                var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+                                previewImage.Source = none;
+                                gamefieldCanvas.Children.Clear();
+                                _currentIndexNoneImage.X = sizeX - 1;
+                                _currentIndexNoneImage.Y = sizeY - 1;
+
+                                _selectedIndex.X = -1;
+                                _selectedIndex.Y = -1;
+                                break;
+                            case MessageBoxResult.No:
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+
                 }
             }
             else
@@ -787,7 +925,40 @@ namespace _8_puzzel
                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
                     _currentIndexNoneImage.X += 1;
+
                 }
+                if (CheckWinState())
+                {
+                    if (CheckWinState())
+                    {
+                        MessageBoxResult result = MessageBox.Show("You win !. Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                        switch (result)
+                        {
+                            case MessageBoxResult.Yes:
+                                _timer.Stop();
+                                TimerCountDown.Text = "00:03:00";
+                                _time = TimeSpan.FromSeconds(180);
+                                inGame = false;
+                                btnPlay.Visibility = Visibility.Visible;
+                                btnPause.Visibility = Visibility.Hidden;
+                                chooseImage = false;
+                                isShuffle = false;
+                                var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+                                previewImage.Source = none;
+                                gamefieldCanvas.Children.Clear();
+                                _currentIndexNoneImage.X = sizeX - 1;
+                                _currentIndexNoneImage.Y = sizeY - 1;
+
+                                _selectedIndex.X = -1;
+                                _selectedIndex.Y = -1;
+                                break;
+                            case MessageBoxResult.No:
+                                break;
+                        }
+                    }
+
+                }
+             
             }
             else
             {
@@ -801,20 +972,19 @@ namespace _8_puzzel
             {
                 for (int j = 0; j < sizeY; j++) 
                 {
-                    if (i == sizeX - 1 && j == sizeY - 1) 
+                    if ((i == sizeX - 1) && (j == sizeY - 1))
                     {
                         break;
                     }
                     var (h, k) = new Tuple<int, int> (i,j);
                     var (x, y) = _images[i, j].Tag as Tuple<int, int>;
-                    if ((h == x) && (k == y))
+                    if (h != x || k != y)
                     {
-                        return true;
+                       return false;
                     }
                 }
             }
-
-            return false;
+            return true;
         }
 
         private void BtnPlay_Click(object sender, RoutedEventArgs e)
