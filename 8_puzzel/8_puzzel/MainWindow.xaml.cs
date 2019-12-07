@@ -522,6 +522,7 @@ namespace _8_puzzel
                 }
             }
 
+
             if (e.GetPosition(this).X > gamefieldCanvas.ActualWidth || e.GetPosition(this).Y > gamefieldCanvas.ActualHeight)
                 verifyIndex = false;
 
@@ -560,8 +561,8 @@ namespace _8_puzzel
                 _selectedIndex.X = -1;
                 _selectedIndex.Y = -1;
                 //this.Title = $"a[{_currentIndexNoneImage.X}][{_currentIndexNoneImage.Y}]";
-
-                if( CheckWinState())
+                
+                if((_currentIndexNoneImage.X == sizeX -1) && (_currentIndexNoneImage.Y ==sizeY -1))
                 {
                     if (CheckWinState())
                     {
@@ -720,7 +721,7 @@ namespace _8_puzzel
                   
                 }
 
-                if (CheckWinState())
+                if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
                 {
                     if (CheckWinState())
                     {
@@ -794,7 +795,7 @@ namespace _8_puzzel
                     _currentIndexNoneImage.Y -= 1;
                 }
 
-                if (CheckWinState())
+                if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
                 {
                     if (CheckWinState())
                     {
@@ -870,7 +871,7 @@ namespace _8_puzzel
                     _currentIndexNoneImage.X -= 1;
 
                 }
-                if (CheckWinState())
+                if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
                 {
                     if (CheckWinState())
                     {
@@ -948,7 +949,7 @@ namespace _8_puzzel
                     _currentIndexNoneImage.X += 1;
 
                 }
-                if (CheckWinState())
+                if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
                 {
                     if (CheckWinState())
                     {
