@@ -152,7 +152,10 @@ namespace _8_puzzel
                                 }
                                 _time = TimeSpan.FromSeconds(int.Parse(reader.ReadLine()));
                                 checkLoad = 1;
-                                MessageBox.Show("Game is loaded");
+
+
+                                btnPlay.Visibility = Visibility.Hidden;
+                                btnPause.Visibility = Visibility.Visible;
 
                             }
                             catch
@@ -229,6 +232,8 @@ namespace _8_puzzel
                                         }
                                     }
                                 }
+
+                                MessageBox.Show("Game is loaded");
                             }
                         }
                         // nếu game chưa bắt đầu
@@ -257,7 +262,9 @@ namespace _8_puzzel
                                 }
                                 _time = TimeSpan.FromSeconds(int.Parse(reader.ReadLine()));
                                 checkLoad = 1;
-                                MessageBox.Show("Game is loaded");
+
+                                btnPlay.Visibility = Visibility.Hidden;
+                                btnPause.Visibility = Visibility.Visible;
                             }
                             catch
                             {
@@ -327,6 +334,8 @@ namespace _8_puzzel
                                         }
                                     }
                                 }
+
+                                MessageBox.Show("Game is loaded");
                             }
                         }
                         break;
@@ -335,8 +344,7 @@ namespace _8_puzzel
                 }
             }
             //Sau khi load
-            btnPlay.Visibility = Visibility.Hidden;
-            btnPause.Visibility = Visibility.Visible;
+            
             //_timer.Stop();
             //TimerCountDown.Text = "00:03:00";
             //_time = TimeSpan.FromSeconds(180);
@@ -383,6 +391,7 @@ namespace _8_puzzel
             if (chooseImage == false)
             {
                 var screen = new OpenFileDialog();
+                //screen.Filter =
 
                 if (screen.ShowDialog() == true)
                 {
@@ -398,9 +407,10 @@ namespace _8_puzzel
                     Canvas.SetTop(previewImage, 0);
 
                     // Bat dau cat thanh 9 manh
+                    //MessageBox.Show($"{source.Width} - {source.Height}");
                     var h = (int)(source.Height / sizeX);
                     var w = (int)(source.Width / sizeY);
-
+                    //MessageBox.Show($"{h}-{w}");
                     for (int i = 0; i < sizeX; i++)
                     {
                         for (int j = 0; j < sizeY; j++)
@@ -996,9 +1006,9 @@ namespace _8_puzzel
                     {
                         break;
                     }
-                    var (h, k) = new Tuple<int, int> (i,j);
+                    //var (h, k) = new Tuple<int, int> (i,j);
                     var (x, y) = _images[i, j].Tag as Tuple<int, int>;
-                    if (h != x || k != y)
+                    if (i != x || j != y)
                     {
                        return false;
                     }
