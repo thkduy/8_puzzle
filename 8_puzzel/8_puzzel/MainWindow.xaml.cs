@@ -417,12 +417,13 @@ namespace _8_puzzel
                         {
                             var rect = new Int32Rect(j * w, i * h, w, h);
                             var cropBitmap = new CroppedBitmap(source, rect);
-
+                            
                             var cropImage = new Image();
                             cropImage.Stretch = Stretch.Fill;
                             cropImage.Width = width;
                             cropImage.Height = height;
                             cropImage.Source = cropBitmap;
+                            
                             cropImage.Tag = new Tuple<int, int>(i, j);
                             _images[i, j] = cropImage; // tham chiếu tới crop image
 
@@ -531,6 +532,7 @@ namespace _8_puzzel
                 }
             }
 
+
             if (e.GetPosition(this).X > gamefieldCanvas.ActualWidth || e.GetPosition(this).Y > gamefieldCanvas.ActualHeight)
                 verifyIndex = false;
 
@@ -569,8 +571,8 @@ namespace _8_puzzel
                 _selectedIndex.X = -1;
                 _selectedIndex.Y = -1;
                 //this.Title = $"a[{_currentIndexNoneImage.X}][{_currentIndexNoneImage.Y}]";
-
-                if( CheckWinState())
+                
+                if((_currentIndexNoneImage.X == sizeX -1) && (_currentIndexNoneImage.Y ==sizeY -1))
                 {
                     if (CheckWinState())
                     {
@@ -729,7 +731,7 @@ namespace _8_puzzel
                   
                 }
 
-                if (CheckWinState())
+                if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
                 {
                     if (CheckWinState())
                     {
@@ -803,7 +805,7 @@ namespace _8_puzzel
                     _currentIndexNoneImage.Y -= 1;
                 }
 
-                if (CheckWinState())
+                if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
                 {
                     if (CheckWinState())
                     {
@@ -879,7 +881,7 @@ namespace _8_puzzel
                     _currentIndexNoneImage.X -= 1;
 
                 }
-                if (CheckWinState())
+                if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
                 {
                     if (CheckWinState())
                     {
@@ -957,7 +959,7 @@ namespace _8_puzzel
                     _currentIndexNoneImage.X += 1;
 
                 }
-                if (CheckWinState())
+                if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
                 {
                     if (CheckWinState())
                     {
@@ -1128,7 +1130,6 @@ namespace _8_puzzel
             }
             else
             {
-               string s=  _images[2, 2].Tag.ToString();
                 MessageBox.Show("You have not selected a photo");
             }
         }
