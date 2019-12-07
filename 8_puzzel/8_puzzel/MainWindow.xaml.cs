@@ -387,12 +387,13 @@ namespace _8_puzzel
                         {
                             var rect = new Int32Rect(j * w, i * h, w, h);
                             var cropBitmap = new CroppedBitmap(source, rect);
-
+                            
                             var cropImage = new Image();
                             cropImage.Stretch = Stretch.Fill;
                             cropImage.Width = width;
                             cropImage.Height = height;
                             cropImage.Source = cropBitmap;
+                            
                             cropImage.Tag = new Tuple<int, int>(i, j);
                             _images[i, j] = cropImage; // tham chiếu tới crop image
 
@@ -1098,7 +1099,6 @@ namespace _8_puzzel
             }
             else
             {
-               string s=  _images[2, 2].Tag.ToString();
                 MessageBox.Show("You have not selected a photo");
             }
         }
