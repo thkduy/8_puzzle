@@ -232,15 +232,41 @@ namespace _8_puzzel
 
                                 }
                                
-                                MessageBox.Show("Game is loaded");
                             }
                             _timer.Stop();
                             _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
                             {
                                 TimerCountDown.Text = _time.ToString("c");
-                                if (_time == TimeSpan.Zero) _timer.Stop();
+                                if (_time == TimeSpan.Zero)
+                                {
+                                    _timer.Stop();
+                                    MessageBoxResult response = MessageBox.Show("You loose.!\nNew Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                                    switch (response)
+                                    {
+                                        case MessageBoxResult.Yes:
+                                            _timer.Stop();
+                                            TimerCountDown.Text = "00:03:00";
+                                            _time = TimeSpan.FromSeconds(180);
+                                            inGame = false;
+                                            btnPlay.Visibility = Visibility.Visible;
+                                            btnPause.Visibility = Visibility.Hidden;
+                                            chooseImage = false;
+                                            isShuffle = false;
+                                            var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+                                            previewImage.Source = none;
+                                            gamefieldCanvas.Children.Clear();
+                                            _currentIndexNoneImage.X = sizeX - 1;
+                                            _currentIndexNoneImage.Y = sizeY - 1;
+                                            _selectedIndex.X = -1;
+                                            _selectedIndex.Y = -1;
+                                            break;
+                                        case MessageBoxResult.No:
+                                            break;
+                                    }
+                                }
                                 _time = _time.Add(TimeSpan.FromSeconds(-1));
                             }, Application.Current.Dispatcher);
+                            MessageBox.Show("Game is loaded");
 
                             _timer.Start();
                         }
@@ -345,7 +371,33 @@ namespace _8_puzzel
                                 _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
                                 {
                                     TimerCountDown.Text = _time.ToString("c");
-                                    if (_time == TimeSpan.Zero) _timer.Stop();
+                                    if (_time == TimeSpan.Zero)
+                                    {
+                                         _timer.Stop();
+                                    MessageBoxResult response = MessageBox.Show("You loose.!\nNew Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                                    switch (response)
+                                    {
+                                        case MessageBoxResult.Yes:
+                                                _timer.Stop();
+                                                TimerCountDown.Text = "00:03:00";
+                                                _time = TimeSpan.FromSeconds(180);
+                                                inGame = false;
+                                                btnPlay.Visibility = Visibility.Visible;
+                                                btnPause.Visibility = Visibility.Hidden;
+                                                chooseImage = false;
+                                                isShuffle = false;
+                                                var none1 = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+                                                previewImage.Source = none1;
+                                                gamefieldCanvas.Children.Clear();
+                                                _currentIndexNoneImage.X = sizeX - 1;
+                                                _currentIndexNoneImage.Y = sizeY - 1;
+                                                _selectedIndex.X = -1;
+                                                _selectedIndex.Y = -1;
+                                                break;
+                                        case MessageBoxResult.No:
+                                            break;
+                                    }
+                                    }
                                     _time = _time.Add(TimeSpan.FromSeconds(-1));
                                 }, Application.Current.Dispatcher);
 
@@ -392,7 +444,6 @@ namespace _8_puzzel
                     gamefieldCanvas.Children.Clear();
                     _currentIndexNoneImage.X = sizeX - 1;
                     _currentIndexNoneImage.Y = sizeY - 1;
-
                     _selectedIndex.X = -1;
                     _selectedIndex.Y = -1;
                     break;
@@ -608,7 +659,6 @@ namespace _8_puzzel
                                 gamefieldCanvas.Children.Clear();
                                 _currentIndexNoneImage.X = sizeX - 1;
                                 _currentIndexNoneImage.Y = sizeY - 1;
-
                                 _selectedIndex.X = -1;
                                 _selectedIndex.Y = -1;
                                 break;
@@ -767,7 +817,6 @@ namespace _8_puzzel
                                 gamefieldCanvas.Children.Clear();
                                 _currentIndexNoneImage.X = sizeX - 1;
                                 _currentIndexNoneImage.Y = sizeY - 1;
-
                                 _selectedIndex.X = -1;
                                 _selectedIndex.Y = -1;
                                 break;
@@ -1195,14 +1244,21 @@ namespace _8_puzzel
                         switch (result)
                         {
                             case MessageBoxResult.Yes:
+                                _timer.Stop();
+                                TimerCountDown.Text = "00:03:00";
+                                _time = TimeSpan.FromSeconds(180);
                                 inGame = false;
+                                btnPlay.Visibility = Visibility.Visible;
+                                btnPause.Visibility = Visibility.Hidden;
                                 chooseImage = false;
+                                isShuffle = false;
                                 var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
-
-                                previewImage.Width = 360;
-                                previewImage.Height = 230;
                                 previewImage.Source = none;
                                 gamefieldCanvas.Children.Clear();
+                                _currentIndexNoneImage.X = sizeX - 1;
+                                _currentIndexNoneImage.Y = sizeY - 1;
+                                _selectedIndex.X = -1;
+                                _selectedIndex.Y = -1;
                                 break;
                             case MessageBoxResult.No:
                                 break;
