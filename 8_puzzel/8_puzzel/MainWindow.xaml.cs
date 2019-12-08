@@ -81,8 +81,8 @@ namespace _8_puzzel
                     {
                         if (i == _currentIndexNoneImage.X && j == _currentIndexNoneImage.Y)
                         {
-                            writer.Write("-1 ");
-                            writer.Write("-1");
+                            writer.Write($"{sizeX} ");
+                            writer.Write($"{sizeY}");
                         }
                         else
                         {
@@ -203,11 +203,6 @@ namespace _8_puzzel
                                             for (int n = 0; n < sizeY; n++)
                                             {
                                                 var (item1,item2) = _images[m, n].Tag as Tuple<int, int>;
-                                                if (item1 == -1 && item2 == -1)
-                                                {
-                                                    cropImage.Tag = new Tuple<int, int>(sizeX, sizeY);
-                                                    _images[m, n] = cropImage;
-                                                }
                                                 if (item1 == i && item2 == j)
                                                 {
                                                     flag = 1;
@@ -316,16 +311,13 @@ namespace _8_puzzel
                                         cropImage.Tag = new Tuple<int, int>(i, j);
                                         for (int m = 0; m < sizeX; m++)
                                         {
+                                            int flag = 0;
                                             for (int n = 0; n < sizeY; n++)
                                             {
                                                 var (item1, item2) = A[m, n];
-                                                if(item1 == -1 && item2 == -1)
-                                                {
-                                                    cropImage.Tag = new Tuple<int, int>(sizeX, sizeY);
-                                                    _images[m, n] = cropImage;
-                                                }
                                                 if (item1 == i && item2 == j)
                                                 {
+                                                    flag = 1;
                                                     _images[m, n] = cropImage; // tham chiếu tới crop image
                                                     gamefieldCanvas.Children.Add(cropImage);
                                                     if (!(m == _currentIndexNoneImage.X && n == _currentIndexNoneImage.Y))
@@ -338,7 +330,11 @@ namespace _8_puzzel
                                                     cropImage.MouseLeftButtonUp += CropImage_MouseLeftButtonUp;
                                                     cropImage.MouseMove += CropImage_MouseMove;
                                                 }
+                                                if (flag == 1)
+                                                    break;
                                             }
+                                            if (flag == 1)
+                                                break;
                                         }
                                     }
                                 }
