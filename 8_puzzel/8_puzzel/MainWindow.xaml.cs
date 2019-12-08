@@ -637,19 +637,16 @@ namespace _8_puzzel
 
             if (_selectedBitmap != null)
             {
-                if (e.GetPosition(this).X > gamefieldCanvas.ActualWidth || e.GetPosition(this).Y > gamefieldCanvas.ActualHeight)
+                _isDragging = false;
+                if (_selectedIndex.X != -1)
                 {
-                    _isDragging = false;
-                    if (_selectedIndex.X != -1)
-                    {
-                        Canvas.SetLeft(_selectedBitmap, _selectedIndex.Y * (width + 2));
-                        Canvas.SetTop(_selectedBitmap, _selectedIndex.X * (height + 2));
-                        //this.Title = $"lai vi tri cu! selected: {_selectedIndex.X} - {_selectedIndex.Y} current:{_currentIndexNoneImage.X} - {_currentIndexNoneImage.Y} a[{_selectedBitmap.Tag}]";
-                        //reset
-                        _selectedBitmap = null;
-                        _selectedIndex.X = -1;
-                        _selectedIndex.Y = -1;
-                    }
+                    Canvas.SetLeft(_selectedBitmap, _selectedIndex.Y * (width + 2));
+                    Canvas.SetTop(_selectedBitmap, _selectedIndex.X * (height + 2));
+                    //this.Title = $"windows lai vi tri cu! selected: {_selectedIndex.X} - {_selectedIndex.Y} current:{_currentIndexNoneImage.X} - {_currentIndexNoneImage.Y} a[{_selectedBitmap.Tag}]";
+                    //reset
+                    _selectedBitmap = null;
+                    _selectedIndex.X = -1;
+                    _selectedIndex.Y = -1;
                 }
             }
         }
