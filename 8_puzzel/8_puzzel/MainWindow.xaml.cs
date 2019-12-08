@@ -152,7 +152,10 @@ namespace _8_puzzel
                                 }
                                 _time = TimeSpan.FromSeconds(int.Parse(reader.ReadLine()));
                                 checkLoad = 1;
-                                MessageBox.Show("Game is loaded");
+
+
+                                btnPlay.Visibility = Visibility.Hidden;
+                                btnPause.Visibility = Visibility.Visible;
 
                             }
                             catch
@@ -229,6 +232,8 @@ namespace _8_puzzel
                                         }
                                     }
                                 }
+
+                                MessageBox.Show("Game is loaded");
                             }
                         }
                         // nếu game chưa bắt đầu
@@ -257,7 +262,9 @@ namespace _8_puzzel
                                 }
                                 _time = TimeSpan.FromSeconds(int.Parse(reader.ReadLine()));
                                 checkLoad = 1;
-                                MessageBox.Show("Game is loaded");
+
+                                btnPlay.Visibility = Visibility.Hidden;
+                                btnPause.Visibility = Visibility.Visible;
                             }
                             catch
                             {
@@ -327,6 +334,8 @@ namespace _8_puzzel
                                         }
                                     }
                                 }
+
+                                MessageBox.Show("Game is loaded");
                             }
                         }
                         break;
@@ -335,8 +344,7 @@ namespace _8_puzzel
                 }
             }
             //Sau khi load
-            btnPlay.Visibility = Visibility.Hidden;
-            btnPause.Visibility = Visibility.Visible;
+            
             //_timer.Stop();
             //TimerCountDown.Text = "00:03:00";
             //_time = TimeSpan.FromSeconds(180);
@@ -383,6 +391,7 @@ namespace _8_puzzel
             if (chooseImage == false)
             {
                 var screen = new OpenFileDialog();
+                //screen.Filter =
 
                 if (screen.ShowDialog() == true)
                 {
@@ -398,21 +407,23 @@ namespace _8_puzzel
                     Canvas.SetTop(previewImage, 0);
 
                     // Bat dau cat thanh 9 manh
+                    //MessageBox.Show($"{source.Width} - {source.Height}");
                     var h = (int)(source.Height / sizeX);
                     var w = (int)(source.Width / sizeY);
-
+                    //MessageBox.Show($"{h}-{w}");
                     for (int i = 0; i < sizeX; i++)
                     {
                         for (int j = 0; j < sizeY; j++)
                         {
                             var rect = new Int32Rect(j * w, i * h, w, h);
                             var cropBitmap = new CroppedBitmap(source, rect);
-
+                            
                             var cropImage = new Image();
                             cropImage.Stretch = Stretch.Fill;
                             cropImage.Width = width;
                             cropImage.Height = height;
                             cropImage.Source = cropBitmap;
+                            
                             cropImage.Tag = new Tuple<int, int>(i, j);
                             _images[i, j] = cropImage; // tham chiếu tới crop image
 
@@ -521,6 +532,7 @@ namespace _8_puzzel
                 }
             }
 
+
             if (e.GetPosition(this).X > gamefieldCanvas.ActualWidth || e.GetPosition(this).Y > gamefieldCanvas.ActualHeight)
                 verifyIndex = false;
 
@@ -559,8 +571,8 @@ namespace _8_puzzel
                 _selectedIndex.X = -1;
                 _selectedIndex.Y = -1;
                 //this.Title = $"a[{_currentIndexNoneImage.X}][{_currentIndexNoneImage.Y}]";
-
-                if( CheckWinState())
+                
+                if((_currentIndexNoneImage.X == sizeX -1) && (_currentIndexNoneImage.Y ==sizeY -1))
                 {
                     if (CheckWinState())
                     {
@@ -719,7 +731,7 @@ namespace _8_puzzel
                   
                 }
 
-                if (CheckWinState())
+                if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
                 {
                     if (CheckWinState())
                     {
@@ -793,7 +805,7 @@ namespace _8_puzzel
                     _currentIndexNoneImage.Y -= 1;
                 }
 
-                if (CheckWinState())
+                if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
                 {
                     if (CheckWinState())
                     {
@@ -869,7 +881,7 @@ namespace _8_puzzel
                     _currentIndexNoneImage.X -= 1;
 
                 }
-                if (CheckWinState())
+                if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
                 {
                     if (CheckWinState())
                     {
@@ -947,7 +959,7 @@ namespace _8_puzzel
                     _currentIndexNoneImage.X += 1;
 
                 }
-                if (CheckWinState())
+                if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
                 {
                     if (CheckWinState())
                     {
@@ -996,9 +1008,9 @@ namespace _8_puzzel
                     {
                         break;
                     }
-                    var (h, k) = new Tuple<int, int> (i,j);
+                    //var (h, k) = new Tuple<int, int> (i,j);
                     var (x, y) = _images[i, j].Tag as Tuple<int, int>;
-                    if (h != x || k != y)
+                    if (i != x || j != y)
                     {
                        return false;
                     }
@@ -1118,7 +1130,6 @@ namespace _8_puzzel
             }
             else
             {
-               string s=  _images[2, 2].Tag.ToString();
                 MessageBox.Show("You have not selected a photo");
             }
         }
