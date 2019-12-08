@@ -1122,5 +1122,309 @@ namespace _8_puzzel
                 MessageBox.Show("You have not selected a photo");
             }
         }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch(e.Key)
+            {
+                case Key.Left:
+                    if (inGame == true)
+                    {
+                        var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
+                        var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
+                        if (_currentIndexNoneImage.Y + 1 < sizeY)
+                        {
+                            _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1];
+
+                            //trượt
+                            var animation = new DoubleAnimation();
+                            animation.From = (_currentIndexNoneImage.Y + 1) * (width + 2);
+                            animation.To = _currentIndexNoneImage.Y * (width + 2);
+                            animation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
+                            animation.FillBehavior = FillBehavior.Stop;
+                            var story = new Storyboard();
+                            story.Children.Add(animation);
+                            Storyboard.SetTarget(animation, _selectedBitmap);
+                            Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.LeftProperty));
+
+                            story.Begin(this);
+                            //xoa di 
+                            gamefieldCanvas.Children.Remove(_selectedBitmap);
+
+                            //in lai
+                            gamefieldCanvas.Children.Add(_selectedBitmap);
+                            Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                            Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+
+                            _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
+                            _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
+
+                            _currentIndexNoneImage.Y += 1;
+
+                        }
+
+                        if (CheckWinState())
+                        {
+                            if (CheckWinState())
+                            {
+                                MessageBoxResult result = MessageBox.Show("You win !. Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                                switch (result)
+                                {
+                                    case MessageBoxResult.Yes:
+                                        _timer.Stop();
+                                        TimerCountDown.Text = "00:03:00";
+                                        _time = TimeSpan.FromSeconds(180);
+                                        inGame = false;
+                                        btnPlay.Visibility = Visibility.Visible;
+                                        btnPause.Visibility = Visibility.Hidden;
+                                        chooseImage = false;
+                                        isShuffle = false;
+                                        var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+                                        previewImage.Source = none;
+                                        gamefieldCanvas.Children.Clear();
+                                        _currentIndexNoneImage.X = sizeX - 1;
+                                        _currentIndexNoneImage.Y = sizeY - 1;
+
+                                        _selectedIndex.X = -1;
+                                        _selectedIndex.Y = -1;
+                                        break;
+                                    case MessageBoxResult.No:
+                                        break;
+                                }
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Game has not been started");
+                    }
+                    break;
+                case Key.Right:
+                    if (inGame == true)
+                    {
+                        var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
+                        var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
+                        if (_currentIndexNoneImage.Y - 1 >= 0)
+                        {
+                            _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1];
+
+                            //trượt
+                            var animation = new DoubleAnimation();
+                            animation.From = (_currentIndexNoneImage.Y - 1) * (width + 2);
+                            animation.To = _currentIndexNoneImage.Y * (width + 2);
+                            animation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
+                            animation.FillBehavior = FillBehavior.Stop;
+
+                            var story = new Storyboard();
+                            story.Children.Add(animation);
+                            Storyboard.SetTarget(animation, _selectedBitmap);
+                            Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.LeftProperty));
+                            story.Begin(this);
+                            //xoa di 
+                            gamefieldCanvas.Children.Remove(_selectedBitmap);
+
+                            //in lai
+                            gamefieldCanvas.Children.Add(_selectedBitmap);
+                            Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                            Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+
+                            _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
+                            _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
+
+                            _currentIndexNoneImage.Y -= 1;
+                        }
+
+                        if (CheckWinState())
+                        {
+                            if (CheckWinState())
+                            {
+                                MessageBoxResult result = MessageBox.Show("You win !. Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                                switch (result)
+                                {
+                                    case MessageBoxResult.Yes:
+                                        _timer.Stop();
+                                        TimerCountDown.Text = "00:03:00";
+                                        _time = TimeSpan.FromSeconds(180);
+                                        inGame = false;
+                                        btnPlay.Visibility = Visibility.Visible;
+                                        btnPause.Visibility = Visibility.Hidden;
+                                        chooseImage = false;
+                                        isShuffle = false;
+                                        var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+                                        previewImage.Source = none;
+                                        gamefieldCanvas.Children.Clear();
+                                        _currentIndexNoneImage.X = sizeX - 1;
+                                        _currentIndexNoneImage.Y = sizeY - 1;
+
+                                        _selectedIndex.X = -1;
+                                        _selectedIndex.Y = -1;
+                                        break;
+                                    case MessageBoxResult.No:
+                                        break;
+                                }
+                            }
+
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Game has not been started");
+                    }
+                    break;
+                case Key.Up:
+                    if (inGame == true)
+                    {
+                        var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
+                        var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
+                        if (_currentIndexNoneImage.X + 1 < sizeX)
+                        {
+                            _selectedBitmap = _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y];
+
+                            //trượt
+                            var animation = new DoubleAnimation();
+                            animation.From = (_currentIndexNoneImage.X + 1) * (height + 2);
+                            animation.To = _currentIndexNoneImage.X * (height + 2);
+                            animation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
+                            animation.FillBehavior = FillBehavior.Stop;
+
+                            var story = new Storyboard();
+                            story.Children.Add(animation);
+                            Storyboard.SetTarget(animation, _selectedBitmap);
+                            Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.TopProperty));
+                            story.Begin(this);
+                            //xoa di 
+                            gamefieldCanvas.Children.Remove(_selectedBitmap);
+
+                            //in lai
+                            gamefieldCanvas.Children.Add(_selectedBitmap);
+                            Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                            Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+
+                            _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
+                            _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
+
+                            _currentIndexNoneImage.X += 1;
+
+                        }
+                        if (CheckWinState())
+                        {
+                            if (CheckWinState())
+                            {
+                                MessageBoxResult result = MessageBox.Show("You win !. Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                                switch (result)
+                                {
+                                    case MessageBoxResult.Yes:
+                                        _timer.Stop();
+                                        TimerCountDown.Text = "00:03:00";
+                                        _time = TimeSpan.FromSeconds(180);
+                                        inGame = false;
+                                        btnPlay.Visibility = Visibility.Visible;
+                                        btnPause.Visibility = Visibility.Hidden;
+                                        chooseImage = false;
+                                        isShuffle = false;
+                                        var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+                                        previewImage.Source = none;
+                                        gamefieldCanvas.Children.Clear();
+                                        _currentIndexNoneImage.X = sizeX - 1;
+                                        _currentIndexNoneImage.Y = sizeY - 1;
+
+                                        _selectedIndex.X = -1;
+                                        _selectedIndex.Y = -1;
+                                        break;
+                                    case MessageBoxResult.No:
+                                        break;
+                                }
+                            }
+
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Game has not been started");
+                    }
+                    break;
+                case Key.Down:
+                    if (inGame == true)
+                    {
+                        var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
+                        var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
+                        if (_currentIndexNoneImage.X - 1 >= 0)
+                        {
+                            _selectedBitmap = _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y];
+
+                            //trượt
+                            var animation = new DoubleAnimation();
+                            animation.From = (_currentIndexNoneImage.X - 1) * (height + 2);
+                            animation.To = _currentIndexNoneImage.X * (height + 2);
+                            animation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
+                            animation.FillBehavior = FillBehavior.Stop;
+
+                            var story = new Storyboard();
+                            story.Children.Add(animation);
+                            Storyboard.SetTarget(animation, _selectedBitmap);
+                            Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.TopProperty));
+                            story.Begin(this);
+
+                            //xoa di 
+                            gamefieldCanvas.Children.Remove(_selectedBitmap);
+
+                            //in lai
+                            gamefieldCanvas.Children.Add(_selectedBitmap);
+                            Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
+                            Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
+
+                            _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
+                            _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
+
+                            _currentIndexNoneImage.X -= 1;
+
+                        }
+                        if (CheckWinState())
+                        {
+                            if (CheckWinState())
+                            {
+                                MessageBoxResult result = MessageBox.Show("You win !. Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                                switch (result)
+                                {
+                                    case MessageBoxResult.Yes:
+                                        _timer.Stop();
+                                        TimerCountDown.Text = "00:03:00";
+                                        _time = TimeSpan.FromSeconds(180);
+                                        inGame = false;
+                                        btnPlay.Visibility = Visibility.Visible;
+                                        btnPause.Visibility = Visibility.Hidden;
+                                        chooseImage = false;
+                                        isShuffle = false;
+                                        var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+                                        previewImage.Source = none;
+                                        gamefieldCanvas.Children.Clear();
+                                        _currentIndexNoneImage.X = sizeX - 1;
+                                        _currentIndexNoneImage.Y = sizeY - 1;
+
+                                        _selectedIndex.X = -1;
+                                        _selectedIndex.Y = -1;
+                                        break;
+                                    case MessageBoxResult.No:
+                                        break;
+                                }
+                            }
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    else
+                    {
+
+                        MessageBox.Show("Game has not been started");
+                    }
+                    break;
+
+            }
+        }
     }
 }

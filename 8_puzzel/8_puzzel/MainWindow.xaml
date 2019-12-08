@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_8_puzzel"
         mc:Ignorable="d" ResizeMode="CanMinimize" MouseLeftButtonUp="Window_MouseLeftButtonUp"
-        Title="8 Puzzle" Height="700" Width="1100" Loaded="Window_Loaded">
+        Title="8 Puzzle" Height="700" Width="1100" Loaded="Window_Loaded" 
+        KeyDown="Window_KeyDown">
     <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar Name="abc" Height="27">
