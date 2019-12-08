@@ -239,7 +239,6 @@ namespace _8_puzzel
                                     switch (response)
                                     {
                                         case MessageBoxResult.Yes:
-                                            _timer.Stop();
                                             TimerCountDown.Text = "00:03:00";
                                             _time = TimeSpan.FromSeconds(180);
                                             inGame = false;
@@ -256,6 +255,7 @@ namespace _8_puzzel
                                             _selectedIndex.Y = -1;
                                             break;
                                         case MessageBoxResult.No:
+                                            Environment.Exit(1);
                                             break;
                                     }
                                 }
@@ -373,7 +373,6 @@ namespace _8_puzzel
                                     switch (response)
                                     {
                                         case MessageBoxResult.Yes:
-                                                _timer.Stop();
                                                 TimerCountDown.Text = "00:03:00";
                                                 _time = TimeSpan.FromSeconds(180);
                                                 inGame = false;
@@ -390,7 +389,8 @@ namespace _8_puzzel
                                                 _selectedIndex.Y = -1;
                                                 break;
                                         case MessageBoxResult.No:
-                                            break;
+                                                Environment.Exit(1);
+                                                break;
                                     }
                                     }
                                     _time = _time.Add(TimeSpan.FromSeconds(-1));
@@ -637,11 +637,12 @@ namespace _8_puzzel
                 {
                     if (CheckWinState())
                     {
+                        _timer.Stop();
                         MessageBoxResult result = MessageBox.Show("You win !\n Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
                         switch (result)
                         {
+                        
                             case MessageBoxResult.Yes:
-                                _timer.Stop();
                                 TimerCountDown.Text = "00:03:00";
                                 _time = TimeSpan.FromSeconds(180);
                                 inGame = false;
@@ -658,6 +659,7 @@ namespace _8_puzzel
                                 _selectedIndex.Y = -1;
                                 break;
                             case MessageBoxResult.No:
+                                Environment.Exit(1);
                                 break;
                         }
                     }
@@ -792,11 +794,11 @@ namespace _8_puzzel
                 {
                     if (CheckWinState())
                     {
+                        _timer.Stop();
                         MessageBoxResult result = MessageBox.Show("You win !. Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
                         switch (result)
                         {
                             case MessageBoxResult.Yes:
-                                _timer.Stop();
                                 TimerCountDown.Text = "00:03:00";
                                 _time = TimeSpan.FromSeconds(180);
                                 inGame = false;
@@ -813,6 +815,7 @@ namespace _8_puzzel
                                 _selectedIndex.Y = -1;
                                 break;
                             case MessageBoxResult.No:
+                                Environment.Exit(1);
                                 break;
                         }
                     }
@@ -865,11 +868,11 @@ namespace _8_puzzel
                 {
                     if (CheckWinState())
                     {
+                        _timer.Stop();
                         MessageBoxResult result = MessageBox.Show("You win !. Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
                         switch (result)
                         {
                             case MessageBoxResult.Yes:
-                                _timer.Stop();
                                 TimerCountDown.Text = "00:03:00";
                                 _time = TimeSpan.FromSeconds(180);
                                 inGame = false;
@@ -887,6 +890,7 @@ namespace _8_puzzel
                                 _selectedIndex.Y = -1;
                                 break;
                             case MessageBoxResult.No:
+                                Environment.Exit(1);
                                 break;
                         }
                     }
@@ -941,12 +945,12 @@ namespace _8_puzzel
                 {
                     if (CheckWinState())
                     {
+                        _timer.Stop();
                         MessageBoxResult result = MessageBox.Show("You win !. Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
                         switch (result)
                         {
                             case MessageBoxResult.Yes:
-                                _timer.Stop();
-                                TimerCountDown.Text = "00:03:00";
+                               TimerCountDown.Text = "00:03:00";
                                 _time = TimeSpan.FromSeconds(180);
                                 inGame = false;
                                 btnPlay.Visibility = Visibility.Visible;
@@ -963,6 +967,7 @@ namespace _8_puzzel
                                 _selectedIndex.Y = -1;
                                 break;
                             case MessageBoxResult.No:
+                                Environment.Exit(1);
                                 break;
                         }
                     }
@@ -1019,11 +1024,11 @@ namespace _8_puzzel
                 {
                     if (CheckWinState())
                     {
+                        _timer.Stop();
                         MessageBoxResult result = MessageBox.Show("You win !. Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
                         switch (result)
                         {
                             case MessageBoxResult.Yes:
-                                _timer.Stop();
                                 TimerCountDown.Text = "00:03:00";
                                 _time = TimeSpan.FromSeconds(180);
                                 inGame = false;
@@ -1041,6 +1046,7 @@ namespace _8_puzzel
                                 _selectedIndex.Y = -1;
                                 break;
                             case MessageBoxResult.No:
+                                Environment.Exit(1);
                                 break;
                         }
                     }
@@ -1056,7 +1062,6 @@ namespace _8_puzzel
      
         private bool CheckWinState()
         {
-            MessageBox.Show("123");
             for (int i = 0; i < sizeX; i++) 
             {
                 for (int j = 0; j < sizeY; j++) 
@@ -1237,7 +1242,6 @@ namespace _8_puzzel
                         switch (result)
                         {
                             case MessageBoxResult.Yes:
-                                _timer.Stop();
                                 TimerCountDown.Text = "00:03:00";
                                 _time = TimeSpan.FromSeconds(180);
                                 inGame = false;
@@ -1254,6 +1258,7 @@ namespace _8_puzzel
                                 _selectedIndex.Y = -1;
                                 break;
                             case MessageBoxResult.No:
+                                Environment.Exit(1);
                                 break;
                         }
                     }
@@ -1311,11 +1316,11 @@ namespace _8_puzzel
                         {
                             if (CheckWinState())
                             {
+                                _timer.Stop();
                                 MessageBoxResult result = MessageBox.Show("You win !. Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
                                 switch (result)
                                 {
                                     case MessageBoxResult.Yes:
-                                        _timer.Stop();
                                         TimerCountDown.Text = "00:03:00";
                                         _time = TimeSpan.FromSeconds(180);
                                         inGame = false;
@@ -1332,6 +1337,7 @@ namespace _8_puzzel
                                         _selectedIndex.Y = -1;
                                         break;
                                     case MessageBoxResult.No:
+                                        Environment.Exit(1);
                                         break;
                                 }
                             }
@@ -1382,11 +1388,11 @@ namespace _8_puzzel
                         {
                             if (CheckWinState())
                             {
+                                _timer.Stop();
                                 MessageBoxResult result = MessageBox.Show("You win !. Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
                                 switch (result)
                                 {
                                     case MessageBoxResult.Yes:
-                                        _timer.Stop();
                                         TimerCountDown.Text = "00:03:00";
                                         _time = TimeSpan.FromSeconds(180);
                                         inGame = false;
@@ -1404,6 +1410,7 @@ namespace _8_puzzel
                                         _selectedIndex.Y = -1;
                                         break;
                                     case MessageBoxResult.No:
+                                        Environment.Exit(1);
                                         break;
                                 }
                             }
@@ -1455,11 +1462,11 @@ namespace _8_puzzel
                         {
                             if (CheckWinState())
                             {
+                                _timer.Stop();
                                 MessageBoxResult result = MessageBox.Show("You win !. Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
                                 switch (result)
                                 {
                                     case MessageBoxResult.Yes:
-                                        _timer.Stop();
                                         TimerCountDown.Text = "00:03:00";
                                         _time = TimeSpan.FromSeconds(180);
                                         inGame = false;
@@ -1477,6 +1484,7 @@ namespace _8_puzzel
                                         _selectedIndex.Y = -1;
                                         break;
                                     case MessageBoxResult.No:
+                                        Environment.Exit(1);
                                         break;
                                 }
                             }
@@ -1529,11 +1537,11 @@ namespace _8_puzzel
                         {
                             if (CheckWinState())
                             {
+                                _timer.Stop();
                                 MessageBoxResult result = MessageBox.Show("You win !. Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
                                 switch (result)
                                 {
                                     case MessageBoxResult.Yes:
-                                        _timer.Stop();
                                         TimerCountDown.Text = "00:03:00";
                                         _time = TimeSpan.FromSeconds(180);
                                         inGame = false;
@@ -1551,6 +1559,7 @@ namespace _8_puzzel
                                         _selectedIndex.Y = -1;
                                         break;
                                     case MessageBoxResult.No:
+                                        Environment.Exit(1);
                                         break;
                                 }
                             }
