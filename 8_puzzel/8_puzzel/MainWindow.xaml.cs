@@ -1038,55 +1038,125 @@ namespace _8_puzzel
                     {
                         switch (rnd.Next(1, 5)) // creates a number between 1 and 4
                         {
-                            case 1: //left
+                            case 1: // left
                                 if (_currentIndexNoneImage.Y + 1 < sizeY)
                                 {
                                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1];
-                                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
+                                    //trượt
+                                    var animation = new DoubleAnimation();
+                                    animation.From = (_currentIndexNoneImage.Y + 1) * (width + 2);
+                                    animation.To = _currentIndexNoneImage.Y * (width + 2);
+                                    animation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
+                                    animation.FillBehavior = FillBehavior.Stop;
+                                    var story = new Storyboard();
+                                    story.Children.Add(animation);
+                                    Storyboard.SetTarget(animation, _selectedBitmap);
+                                    Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.LeftProperty));
+
+                                    story.Begin(this);
+                                    //xoa di 
+                                    gamefieldCanvas.Children.Remove(_selectedBitmap);
+
+                                    //in lai
+                                    gamefieldCanvas.Children.Add(_selectedBitmap);
                                     Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
                                     Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
-
+                                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
                                     _currentIndexNoneImage.Y += 1;
 
                                 }
                                 break;
-                            case 2:
+                            case 2: // right
                                 if (_currentIndexNoneImage.Y - 1 >= 0)
                                 {
                                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1];
-                                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
+
+                                    //trượt
+                                    var animation = new DoubleAnimation();
+                                    animation.From = (_currentIndexNoneImage.Y - 1) * (width + 2);
+                                    animation.To = _currentIndexNoneImage.Y * (width + 2);
+                                    animation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
+                                    animation.FillBehavior = FillBehavior.Stop;
+
+                                    var story = new Storyboard();
+                                    story.Children.Add(animation);
+                                    Storyboard.SetTarget(animation, _selectedBitmap);
+                                    Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.LeftProperty));
+                                    story.Begin(this);
+                                    //xoa di 
+                                    gamefieldCanvas.Children.Remove(_selectedBitmap);
+
+                                    //in lai
+                                    gamefieldCanvas.Children.Add(_selectedBitmap);
                                     Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
                                     Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
+                                    _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
                                     _currentIndexNoneImage.Y -= 1;
                                 }
                                 break;
-                            case 3:
+                            case 3: // down
                                 if (_currentIndexNoneImage.X - 1 >= 0)
                                 {
                                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y];
-                                    _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
+                                    //trượt
+                                    var animation = new DoubleAnimation();
+                                    animation.From = (_currentIndexNoneImage.X - 1) * (height + 2);
+                                    animation.To = _currentIndexNoneImage.X * (height + 2);
+                                    animation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
+                                    animation.FillBehavior = FillBehavior.Stop;
+
+                                    var story = new Storyboard();
+                                    story.Children.Add(animation);
+                                    Storyboard.SetTarget(animation, _selectedBitmap);
+                                    Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.TopProperty));
+                                    story.Begin(this);
+
+                                    //xoa di 
+                                    gamefieldCanvas.Children.Remove(_selectedBitmap);
+
+                                    //in lai
+                                    gamefieldCanvas.Children.Add(_selectedBitmap);
                                     Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
                                     Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
+                                    _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
                                     _currentIndexNoneImage.X -= 1;
                                 }
                                 break;
-                            case 4:
+                            case 4: //up
                                 if (_currentIndexNoneImage.X + 1 < sizeX)
                                 {
                                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y];
-                                    _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
+
+                                    //trượt
+                                    var animation = new DoubleAnimation();
+                                    animation.From = (_currentIndexNoneImage.X + 1) * (height + 2);
+                                    animation.To = _currentIndexNoneImage.X * (height + 2);
+                                    animation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
+                                    animation.FillBehavior = FillBehavior.Stop;
+
+                                    var story = new Storyboard();
+                                    story.Children.Add(animation);
+                                    Storyboard.SetTarget(animation, _selectedBitmap);
+                                    Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.TopProperty));
+                                    story.Begin(this);
+                                    //xoa di 
+                                    gamefieldCanvas.Children.Remove(_selectedBitmap);
+
+                                    //in lai
+                                    gamefieldCanvas.Children.Add(_selectedBitmap);
                                     Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
                                     Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
 
+                                    _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y] = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y];
                                     _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y] = _selectedBitmap;
 
                                     _currentIndexNoneImage.X += 1;
