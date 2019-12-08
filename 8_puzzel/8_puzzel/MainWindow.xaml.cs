@@ -263,37 +263,6 @@ namespace _8_puzzel
                             }, Application.Current.Dispatcher);
                             MessageBox.Show("Game is loaded");
                             _timer.Start();
-                            if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
-                            {
-                                if (CheckWinState())
-                                {
-                                    MessageBoxResult response1 = MessageBox.Show("You win !\n Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
-                                    switch (response1)
-                                    {
-                                        case MessageBoxResult.Yes:
-                                            _timer.Stop();
-                                            TimerCountDown.Text = "00:03:00";
-                                            _time = TimeSpan.FromSeconds(180);
-                                            inGame = false;
-                                            btnPlay.Visibility = Visibility.Visible;
-                                            btnPause.Visibility = Visibility.Hidden;
-                                            chooseImage = false;
-                                            isShuffle = false;
-                                            var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
-                                            previewImage.Source = none;
-                                            gamefieldCanvas.Children.Clear();
-                                            _currentIndexNoneImage.X = sizeX - 1;
-                                            _currentIndexNoneImage.Y = sizeY - 1;
-                                            _selectedIndex.X = -1;
-                                            _selectedIndex.Y = -1;
-                                            break;
-                                        case MessageBoxResult.No:
-                                            break;
-                                    }
-                                }
-
-
-                            }
                         }
                         // nếu game chưa bắt đầu
                         else
@@ -429,37 +398,6 @@ namespace _8_puzzel
 
                                 _timer.Start();
                                 MessageBox.Show("Game is loaded");
-                                if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
-                                {
-                                    if (CheckWinState())
-                                    {
-                                        MessageBoxResult result2 = MessageBox.Show("You win !\n Start New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
-                                        switch (result2)
-                                        {
-                                            case MessageBoxResult.Yes:
-                                                _timer.Stop();
-                                                TimerCountDown.Text = "00:03:00";
-                                                _time = TimeSpan.FromSeconds(180);
-                                                inGame = false;
-                                                btnPlay.Visibility = Visibility.Visible;
-                                                btnPause.Visibility = Visibility.Hidden;
-                                                chooseImage = false;
-                                                isShuffle = false;
-                                                var none2 = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
-                                                previewImage.Source = none2;
-                                                gamefieldCanvas.Children.Clear();
-                                                _currentIndexNoneImage.X = sizeX - 1;
-                                                _currentIndexNoneImage.Y = sizeY - 1;
-                                                _selectedIndex.X = -1;
-                                                _selectedIndex.Y = -1;
-                                                break;
-                                            case MessageBoxResult.No:
-                                                break;
-                                        }
-                                    }
-
-
-                                }
                             }
                         }
                         break;
