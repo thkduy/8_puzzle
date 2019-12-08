@@ -151,10 +151,7 @@ namespace _8_puzzel
                                     }
                                 }
                                 _time = TimeSpan.FromSeconds(int.Parse(reader.ReadLine()));
-
                                 checkLoad = 1;
-
-
                                 btnPlay.Visibility = Visibility.Hidden;
                                 btnPause.Visibility = Visibility.Visible;
 
@@ -232,10 +229,20 @@ namespace _8_puzzel
                                                 break;
                                         }
                                     }
-                                }
 
+                                }
+                               
                                 MessageBox.Show("Game is loaded");
                             }
+                            _timer.Stop();
+                            _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
+                            {
+                                TimerCountDown.Text = _time.ToString("c");
+                                if (_time == TimeSpan.Zero) _timer.Stop();
+                                _time = _time.Add(TimeSpan.FromSeconds(-1));
+                            }, Application.Current.Dispatcher);
+
+                            _timer.Start();
                         }
                         // nếu game chưa bắt đầu
                         else
@@ -335,7 +342,14 @@ namespace _8_puzzel
                                         }
                                     }
                                 }
+                                _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
+                                {
+                                    TimerCountDown.Text = _time.ToString("c");
+                                    if (_time == TimeSpan.Zero) _timer.Stop();
+                                    _time = _time.Add(TimeSpan.FromSeconds(-1));
+                                }, Application.Current.Dispatcher);
 
+                                _timer.Start();
                                 MessageBox.Show("Game is loaded");
                             }
                         }
