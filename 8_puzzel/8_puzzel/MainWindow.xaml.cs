@@ -151,6 +151,7 @@ namespace _8_puzzel
                                     }
                                 }
                                 _time = TimeSpan.FromSeconds(int.Parse(reader.ReadLine()));
+
                                 checkLoad = 1;
 
 
@@ -1176,8 +1177,7 @@ namespace _8_puzzel
                     if (_time == TimeSpan.Zero)
                     {
                         _timer.Stop();
-                        MessageBox.Show("You Loose !");
-                        MessageBoxResult result = MessageBox.Show("New Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                        MessageBoxResult result = MessageBox.Show("You loose.!\nNew Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
                         switch (result)
                         {
                             case MessageBoxResult.Yes:
