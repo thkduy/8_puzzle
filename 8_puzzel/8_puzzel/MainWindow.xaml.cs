@@ -1057,6 +1057,7 @@ namespace _8_puzzel
      
         private bool CheckWinState()
         {
+            MessageBox.Show("123");
             for (int i = 0; i < sizeX; i++) 
             {
                 for (int j = 0; j < sizeY; j++) 
@@ -1307,7 +1308,7 @@ namespace _8_puzzel
 
                         }
 
-                        if (CheckWinState())
+                        if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
                         {
                             if (CheckWinState())
                             {
@@ -1328,7 +1329,6 @@ namespace _8_puzzel
                                         gamefieldCanvas.Children.Clear();
                                         _currentIndexNoneImage.X = sizeX - 1;
                                         _currentIndexNoneImage.Y = sizeY - 1;
-
                                         _selectedIndex.X = -1;
                                         _selectedIndex.Y = -1;
                                         break;
@@ -1379,7 +1379,7 @@ namespace _8_puzzel
                             _currentIndexNoneImage.Y -= 1;
                         }
 
-                        if (CheckWinState())
+                        if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
                         {
                             if (CheckWinState())
                             {
@@ -1452,7 +1452,7 @@ namespace _8_puzzel
                             _currentIndexNoneImage.X += 1;
 
                         }
-                        if (CheckWinState())
+                        if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
                         {
                             if (CheckWinState())
                             {
@@ -1526,7 +1526,7 @@ namespace _8_puzzel
                             _currentIndexNoneImage.X -= 1;
 
                         }
-                        if (CheckWinState())
+                        if ((_currentIndexNoneImage.X == sizeX - 1) && (_currentIndexNoneImage.Y == sizeY - 1))
                         {
                             if (CheckWinState())
                             {
