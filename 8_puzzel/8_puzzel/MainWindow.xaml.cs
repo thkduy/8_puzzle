@@ -187,8 +187,8 @@ namespace _8_puzzel
                                 Canvas.SetTop(previewImage, 0);
 
                                 // Bat dau cat thanh 9 manh
-                                var h = (int)(source.Height / sizeX);
-                                var w = (int)(source.Width / sizeY);
+                                var h = (int)(source.PixelHeight / sizeX);
+                                var w = (int)(source.PixelWidth / sizeY);
 
                                 for (int i = 0; i < sizeX; i++)
                                 {
@@ -323,8 +323,8 @@ namespace _8_puzzel
                                 Canvas.SetTop(previewImage, 0);
 
                                 // Bat dau cat thanh 9 manh
-                                var h = (int)(source.Height / sizeX);
-                                var w = (int)(source.Width / sizeY);
+                                var h = (int)(source.PixelHeight / sizeX);
+                                var w = (int)(source.PixelWidth / sizeY);
                                 for (int i = 0; i < sizeX; i++)
                                 {
                                     for (int j = 0; j < sizeY; j++)
@@ -476,8 +476,8 @@ namespace _8_puzzel
                     Canvas.SetTop(previewImage, 0);
 
                     // Bat dau cat thanh 9 manh
-                    var h = (int)(source.Height / sizeX);
-                    var w = (int)(source.Width / sizeY);
+                    var h = (int)(source.PixelHeight / sizeX);
+                    var w = (int)(source.PixelWidth / sizeY);
 
                     for (int i = 0; i < sizeX; i++)
                     {
