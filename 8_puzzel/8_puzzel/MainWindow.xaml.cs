@@ -709,7 +709,6 @@ namespace _8_puzzel
             inGame = false;
             btnPlay.Visibility = Visibility.Visible;
             btnPause.Visibility = Visibility.Hidden;
-            MessageBox.Show("button Pause clicked");
         }
 
         private void BtnQuit_Click(object sender, RoutedEventArgs e)
