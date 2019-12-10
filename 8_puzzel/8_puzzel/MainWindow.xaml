@@ -48,7 +48,7 @@
             <Border BorderThickness="3" BorderBrush="Gray" Grid.Row="0" Grid.Column="0" Margin="10">
                 <Canvas Name="gamefieldCanvas" Background="LightGray"/>
             </Border>
-            <TextBlock Name="TimerCountDown" Text="00:03:00" FontSize="120" TextAlignment="Center" VerticalAlignment="Center"
+            <TextBlock Name="TimerCountDown" FontSize="120" TextAlignment="Center" VerticalAlignment="Center"
                        Background="LightBlue" Grid.Row="1" Grid.Column="0" Margin="0,0,0,30"/>
             <Canvas Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
                 <Border BorderThickness="3" BorderBrush="Gray" Margin="10">

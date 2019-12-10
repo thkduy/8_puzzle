@@ -32,6 +32,8 @@ namespace _8_puzzel
             InitializeComponent();
         }
 
+        int width, height;
+
         Image [,] _images;
         bool _isDragging = false;
         Image _selectedBitmap = null;
@@ -39,8 +41,10 @@ namespace _8_puzzel
         Point _currentIndexNoneImage;
         Point _selectedIndex;
         double startLeft, startTop;
+        //xet vi tri o dang duoc chon co nam o trai, phai, tren, duoi cua o trong khong
         int[] dong = { -1, 1, 0, 0 };
         int[] cot = { 0, 0, -1, 1 };
+
         const int sizeX = 3;
         const int sizeY = 3;
         bool inGame = false;
@@ -48,9 +52,13 @@ namespace _8_puzzel
         bool isShuffle = false;
         string _currentDirection = null;
         const string filename = "save.txt";
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _images = new Image[sizeX, sizeY];
+
+            width = (int)(gamefieldCanvas.ActualWidth / sizeY);
+            height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
 
             _currentIndexNoneImage.X = sizeX - 1;
             _currentIndexNoneImage.Y = sizeY - 1;
@@ -171,8 +179,6 @@ namespace _8_puzzel
                                 var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
                                 previewImage.Source = none;
                                 gamefieldCanvas.Children.Clear();
-                                var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border //223
-                                var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border //149
 
                                 var source = new BitmapImage(new Uri(_currentDirection, UriKind.Absolute));
                                 previewImage.Source = source;
@@ -239,7 +245,7 @@ namespace _8_puzzel
                                     switch (response)
                                     {
                                         case MessageBoxResult.Yes:
-                                            TimerCountDown.Text = "00:03:00";
+                                            TimerCountDown.Text = "";
                                             _time = TimeSpan.FromSeconds(180);
                                             inGame = false;
                                             btnPlay.Visibility = Visibility.Visible;
@@ -309,8 +315,6 @@ namespace _8_puzzel
                                 var none = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
                                 previewImage.Source = none;
                                 gamefieldCanvas.Children.Clear();
-                                var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border //223
-                                var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border //149
 
                                 var source = new BitmapImage(new Uri(_currentDirection, UriKind.Absolute));
                                 previewImage.Source = source;
@@ -327,6 +331,7 @@ namespace _8_puzzel
                                     {
                                         var rect = new Int32Rect(j * w, i * h, w, h);
                                         var cropBitmap = new CroppedBitmap(source, rect);
+                                        RenderOptions.SetBitmapScalingMode(cropBitmap, BitmapScalingMode.HighQuality);
 
                                         var cropImage = new Image();
                                         cropImage.Stretch = Stretch.Fill;
@@ -369,29 +374,29 @@ namespace _8_puzzel
                                     if (_time == TimeSpan.Zero)
                                     {
                                          _timer.Stop();
-                                    MessageBoxResult response = MessageBox.Show("You loose.!\nNew Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
-                                    switch (response)
-                                    {
-                                        case MessageBoxResult.Yes:
-                                                TimerCountDown.Text = "00:03:00";
-                                                _time = TimeSpan.FromSeconds(180);
-                                                inGame = false;
-                                                btnPlay.Visibility = Visibility.Visible;
-                                                btnPause.Visibility = Visibility.Hidden;
-                                                chooseImage = false;
-                                                isShuffle = false;
-                                                var none1 = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
-                                                previewImage.Source = none1;
-                                                gamefieldCanvas.Children.Clear();
-                                                _currentIndexNoneImage.X = sizeX - 1;
-                                                _currentIndexNoneImage.Y = sizeY - 1;
-                                                _selectedIndex.X = -1;
-                                                _selectedIndex.Y = -1;
-                                                break;
-                                        case MessageBoxResult.No:
-                                                Environment.Exit(1);
-                                                break;
-                                    }
+                                        MessageBoxResult response = MessageBox.Show("You loose.!\nNew Game?", "Notice", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                                        switch (response)
+                                        {
+                                            case MessageBoxResult.Yes:
+                                                    TimerCountDown.Text = "";
+                                                    _time = TimeSpan.FromSeconds(180);
+                                                    inGame = false;
+                                                    btnPlay.Visibility = Visibility.Visible;
+                                                    btnPause.Visibility = Visibility.Hidden;
+                                                    chooseImage = false;
+                                                    isShuffle = false;
+                                                    var none1 = new BitmapImage(new Uri("/Images/none.png", UriKind.Relative));
+                                                    previewImage.Source = none1;
+                                                    gamefieldCanvas.Children.Clear();
+                                                    _currentIndexNoneImage.X = sizeX - 1;
+                                                    _currentIndexNoneImage.Y = sizeY - 1;
+                                                    _selectedIndex.X = -1;
+                                                    _selectedIndex.Y = -1;
+                                                    break;
+                                            case MessageBoxResult.No:
+                                                    Environment.Exit(1);
+                                                    break;
+                                        }
                                     }
                                     _time = _time.Add(TimeSpan.FromSeconds(-1));
                                 }, Application.Current.Dispatcher);
@@ -405,19 +410,21 @@ namespace _8_puzzel
                         break;
                 }
             }
-            //Sau khi load
-            
-            //_timer.Stop();
-            //TimerCountDown.Text = "00:03:00";
-            //_time = TimeSpan.FromSeconds(180);
         }
 
         private void Help_Click(object sender, RoutedEventArgs e)
         {
-            _timer.Stop();
-            _time = _time - TimeSpan.FromSeconds(0);
-            MessageBox.Show("button Help clicked");
-            _timer.Start();   //Sau khi xem help
+            if (_timer != null)
+            {
+                _timer.Stop();
+                _time = _time - TimeSpan.FromSeconds(0);
+                MessageBox.Show("8 Puzzle V.1.0.0\nBy:\nTrinh Hoang Khanh Duy 1712393\nVo Minh Hien 1712426\nVu Hoang Hieu 1712444");
+                _timer.Start();   //Sau khi xem help
+            }
+            else
+            {
+                MessageBox.Show("8 Puzzle V.1.0.0\nBy:\nTrinh Hoang Khanh Duy 1712393\nVo Minh Hien 1712426\nVu Hoang Hieu 1712444");
+            }
         }
 
         private void New_Click(object sender, RoutedEventArgs e)
@@ -426,9 +433,12 @@ namespace _8_puzzel
             switch (result)
             {
                 case MessageBoxResult.Yes:
-                    _timer.Stop();
-                    TimerCountDown.Text = "00:03:00";
-                    _time = TimeSpan.FromSeconds(180);
+                    if (_timer != null)
+                    {
+                        _timer.Stop();
+                        TimerCountDown.Text = "";
+                        _time = TimeSpan.FromSeconds(180);
+                    }
                     inGame = false;
                     btnPlay.Visibility = Visibility.Visible;
                     btnPause.Visibility = Visibility.Hidden;
@@ -452,13 +462,11 @@ namespace _8_puzzel
             if (chooseImage == false)
             {
                 var screen = new OpenFileDialog();
-                //screen.Filter =
+                screen.Filter =  "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
 
                 if (screen.ShowDialog() == true)
                 {
                     chooseImage = true;
-                    var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border //223
-                    var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border //149
 
                     var source = new BitmapImage(new Uri(screen.FileName, UriKind.Absolute));
                     _currentDirection = screen.FileName;
@@ -468,17 +476,17 @@ namespace _8_puzzel
                     Canvas.SetTop(previewImage, 0);
 
                     // Bat dau cat thanh 9 manh
-                    //MessageBox.Show($"{source.Width} - {source.Height}");
                     var h = (int)(source.Height / sizeX);
                     var w = (int)(source.Width / sizeY);
-                    //MessageBox.Show($"{h}-{w}");
+
                     for (int i = 0; i < sizeX; i++)
                     {
                         for (int j = 0; j < sizeY; j++)
                         {
                             var rect = new Int32Rect(j * w, i * h, w, h);
                             var cropBitmap = new CroppedBitmap(source, rect);
-                            
+                            RenderOptions.SetBitmapScalingMode(cropBitmap, BitmapScalingMode.HighQuality);
+
                             var cropImage = new Image();
                             cropImage.Stretch = Stretch.Fill;
                             cropImage.Width = width;
@@ -490,8 +498,6 @@ namespace _8_puzzel
 
                             if (!((i == sizeX - 1) && (j == sizeY - 1)))
                             {
-                                //MessageBox.Show($"{h}-{w}");
-                                //Debug.WriteLine($"Len = {len}");
                                 gamefieldCanvas.Children.Add(cropImage);
                                 Canvas.SetLeft(cropImage, j * (width + 2));
                                 Canvas.SetTop(cropImage, i * (height + 2));
@@ -524,14 +530,10 @@ namespace _8_puzzel
                 return;
             }
 
-            var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
-            var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
             var position = e.GetPosition(gamefieldCanvas);
 
             int i = ((int)position.Y) / height;
             int j = ((int)position.X) / width;
-
-            //this.Title = $"{position.X} - {position.Y}, a[{i}][{j}]";
 
             if (_isDragging && i > -1 && i < sizeX && j > -1 && j < sizeY)
             {
@@ -561,19 +563,6 @@ namespace _8_puzzel
             {
                 return;
             }
-            var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
-            var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
-
-            //i là dòng, j là cột
-            // lấy vị trí trong mảng của hình vừa được chọn
-            //var image = sender as Image;
-            //var (i, j) = _images[(int)_selectedIndex.X,(int)_selectedIndex.Y].Tag as Tuple<int, int>;
-            //this.Title = $"a[{i}][{j}]";
-
-            //this.Title = $"last position {_lastPosition.X} - {_lastPosition.Y}";
-
-            //MessageBox.Show($"selected: {_selectedPosition.X} - {_selectedPosition.Y} current:{_currentIndexNoneImage.X} - {_currentIndexNoneImage.Y}");
-            //this.Title = $"a[{i}][{j}]";
 
             //kiểm tra hợp lệ mới cho chuyển vị trí hình (trên, dưới, trái, phải của hình none)
             int last_i = ((int)_lastPosition.Y) / height;
@@ -603,7 +592,7 @@ namespace _8_puzzel
                 _isDragging = false;
                 Canvas.SetLeft(_selectedBitmap, _selectedIndex.Y * (width + 2));
                 Canvas.SetTop(_selectedBitmap, _selectedIndex.X * (height + 2));
-                //this.Title = $"lai vi tri cu! selected: {_selectedIndex.X} - {_selectedIndex.Y} current:{_currentIndexNoneImage.X} - {_currentIndexNoneImage.Y} a[{_selectedBitmap.Tag}]";
+                
                 //reset
                 _selectedBitmap = null;
                 _selectedIndex.X = -1;
@@ -612,9 +601,7 @@ namespace _8_puzzel
             else
             {
                 _isDragging = false;
-                //var position = e.GetPosition(gamefieldCanvas);
-                
-                //MessageBox.Show($" x,y {newI}-{newJ}");
+
                 //set vị trí mới cho hình trên giao diện
                 Canvas.SetLeft(_selectedBitmap, _currentIndexNoneImage.Y * (width + 2));
                 Canvas.SetTop(_selectedBitmap, _currentIndexNoneImage.X * (height + 2));
@@ -627,11 +614,8 @@ namespace _8_puzzel
                 _currentIndexNoneImage.X = _selectedIndex.X;
                 _currentIndexNoneImage.Y = _selectedIndex.Y;
 
-                //MessageBox.Show($"current:{_currentIndexNoneImage.X} - {_currentIndexNoneImage.Y}");
-                //this.Title = $"chuyen vi tri moi  selected: {_selectedIndex.X} - {_selectedIndex.Y} current:{_currentIndexNoneImage.X} - {_currentIndexNoneImage.Y} a[{_selectedBitmap.Tag}]";
                 _selectedIndex.X = -1;
                 _selectedIndex.Y = -1;
-                //this.Title = $"a[{_currentIndexNoneImage.X}][{_currentIndexNoneImage.Y}]";
                 
                 if((_currentIndexNoneImage.X == sizeX -1) && (_currentIndexNoneImage.Y ==sizeY -1))
                 {
@@ -643,7 +627,7 @@ namespace _8_puzzel
                         {
                         
                             case MessageBoxResult.Yes:
-                                TimerCountDown.Text = "00:03:00";
+                                TimerCountDown.Text = "";
                                 _time = TimeSpan.FromSeconds(180);
                                 inGame = false;
                                 btnPlay.Visibility = Visibility.Visible;
@@ -663,13 +647,8 @@ namespace _8_puzzel
                                 break;
                         }
                     }
-
-
                 }
-              
-
             }
-
         }
 
         private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -679,9 +658,6 @@ namespace _8_puzzel
                 return;
             }
 
-            var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
-            var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
-
             if (_selectedBitmap != null)
             {
                 _isDragging = false;
@@ -689,7 +665,7 @@ namespace _8_puzzel
                 {
                     Canvas.SetLeft(_selectedBitmap, _selectedIndex.Y * (width + 2));
                     Canvas.SetTop(_selectedBitmap, _selectedIndex.X * (height + 2));
-                    //this.Title = $"windows lai vi tri cu! selected: {_selectedIndex.X} - {_selectedIndex.Y} current:{_currentIndexNoneImage.X} - {_currentIndexNoneImage.Y} a[{_selectedBitmap.Tag}]";
+
                     //reset
                     _selectedBitmap = null;
                     _selectedIndex.X = -1;
@@ -706,13 +682,11 @@ namespace _8_puzzel
                 return;
             }
 
-            var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
-            var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
             _isDragging = true;
             _selectedBitmap = sender as Image;
 
             gamefieldCanvas.Children.Remove(_selectedBitmap);// remove image of canvas
-            gamefieldCanvas.Children.Add(_selectedBitmap);
+            gamefieldCanvas.Children.Add(_selectedBitmap); // add image again to canvas in order to image become overlay other.
             _lastPosition = e.GetPosition(gamefieldCanvas);
             var newSelect_X = ((int)_lastPosition.Y) / height;
             var newSelect_Y = ((int)_lastPosition.X) / width;
@@ -727,8 +701,6 @@ namespace _8_puzzel
             {
                 _selectedIndex.Y = newSelect_Y;
             }
-            
-            //this.Title = $"selected: [{_selectedIndex.X}][{_selectedIndex.Y}]";
         }
 
         private void BtnPause_Click(object sender, RoutedEventArgs e)
@@ -757,8 +729,6 @@ namespace _8_puzzel
         {
             if (inGame == true)
             {
-                var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
-                var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
                 if (_currentIndexNoneImage.Y + 1 < sizeY)
                 {
                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1];
@@ -799,7 +769,7 @@ namespace _8_puzzel
                         switch (result)
                         {
                             case MessageBoxResult.Yes:
-                                TimerCountDown.Text = "00:03:00";
+                                TimerCountDown.Text = "";
                                 _time = TimeSpan.FromSeconds(180);
                                 inGame = false;
                                 btnPlay.Visibility = Visibility.Visible;
@@ -832,8 +802,6 @@ namespace _8_puzzel
         {
             if (inGame == true)
             {
-                var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
-                var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
                 if (_currentIndexNoneImage.Y - 1 >= 0)
                 {
                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1];
@@ -873,7 +841,7 @@ namespace _8_puzzel
                         switch (result)
                         {
                             case MessageBoxResult.Yes:
-                                TimerCountDown.Text = "00:03:00";
+                                TimerCountDown.Text = "";
                                 _time = TimeSpan.FromSeconds(180);
                                 inGame = false;
                                 btnPlay.Visibility = Visibility.Visible;
@@ -908,8 +876,6 @@ namespace _8_puzzel
         {
             if (inGame == true)
             {
-                var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
-                var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
                 if (_currentIndexNoneImage.X - 1 >= 0)
                 {
                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y];
@@ -950,7 +916,7 @@ namespace _8_puzzel
                         switch (result)
                         {
                             case MessageBoxResult.Yes:
-                               TimerCountDown.Text = "00:03:00";
+                               TimerCountDown.Text = "";
                                 _time = TimeSpan.FromSeconds(180);
                                 inGame = false;
                                 btnPlay.Visibility = Visibility.Visible;
@@ -988,8 +954,6 @@ namespace _8_puzzel
         {
             if (inGame == true)
             {
-                var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
-                var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
                 if (_currentIndexNoneImage.X + 1 < sizeX)
                 {
                     _selectedBitmap = _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y];
@@ -1029,7 +993,7 @@ namespace _8_puzzel
                         switch (result)
                         {
                             case MessageBoxResult.Yes:
-                                TimerCountDown.Text = "00:03:00";
+                                TimerCountDown.Text = "";
                                 _time = TimeSpan.FromSeconds(180);
                                 inGame = false;
                                 btnPlay.Visibility = Visibility.Visible;
@@ -1070,7 +1034,6 @@ namespace _8_puzzel
                     {
                         break;
                     }
-                    //var (h, k) = new Tuple<int, int> (i,j);
                     var (x, y) = _images[i, j].Tag as Tuple<int, int>;
                     if (i != x || j != y)
                     {
@@ -1088,12 +1051,10 @@ namespace _8_puzzel
                 inGame = true;
                 btnPlay.Visibility = Visibility.Hidden;
                 btnPause.Visibility = Visibility.Visible;
-                //MessageBox.Show("button play clicked");
+
                 //tráo đổi
                 if (!isShuffle)
                 {
-                    var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
-                    var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
                     var i = 0;
                     Random rnd = new Random();
                     while (i < 100)
@@ -1242,7 +1203,7 @@ namespace _8_puzzel
                         switch (result)
                         {
                             case MessageBoxResult.Yes:
-                                TimerCountDown.Text = "00:03:00";
+                                TimerCountDown.Text = "";
                                 _time = TimeSpan.FromSeconds(180);
                                 inGame = false;
                                 btnPlay.Visibility = Visibility.Visible;
@@ -1279,8 +1240,6 @@ namespace _8_puzzel
                 case Key.Left:
                     if (inGame == true)
                     {
-                        var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
-                        var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
                         if (_currentIndexNoneImage.Y + 1 < sizeY)
                         {
                             _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y + 1];
@@ -1321,7 +1280,7 @@ namespace _8_puzzel
                                 switch (result)
                                 {
                                     case MessageBoxResult.Yes:
-                                        TimerCountDown.Text = "00:03:00";
+                                        TimerCountDown.Text = "";
                                         _time = TimeSpan.FromSeconds(180);
                                         inGame = false;
                                         btnPlay.Visibility = Visibility.Visible;
@@ -1352,8 +1311,6 @@ namespace _8_puzzel
                 case Key.Right:
                     if (inGame == true)
                     {
-                        var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
-                        var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
                         if (_currentIndexNoneImage.Y - 1 >= 0)
                         {
                             _selectedBitmap = _images[(int)_currentIndexNoneImage.X, (int)_currentIndexNoneImage.Y - 1];
@@ -1393,7 +1350,7 @@ namespace _8_puzzel
                                 switch (result)
                                 {
                                     case MessageBoxResult.Yes:
-                                        TimerCountDown.Text = "00:03:00";
+                                        TimerCountDown.Text = "";
                                         _time = TimeSpan.FromSeconds(180);
                                         inGame = false;
                                         btnPlay.Visibility = Visibility.Visible;
@@ -1426,8 +1383,6 @@ namespace _8_puzzel
                 case Key.Up:
                     if (inGame == true)
                     {
-                        var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
-                        var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
                         if (_currentIndexNoneImage.X + 1 < sizeX)
                         {
                             _selectedBitmap = _images[(int)_currentIndexNoneImage.X + 1, (int)_currentIndexNoneImage.Y];
@@ -1467,7 +1422,7 @@ namespace _8_puzzel
                                 switch (result)
                                 {
                                     case MessageBoxResult.Yes:
-                                        TimerCountDown.Text = "00:03:00";
+                                        TimerCountDown.Text = "";
                                         _time = TimeSpan.FromSeconds(180);
                                         inGame = false;
                                         btnPlay.Visibility = Visibility.Visible;
@@ -1488,9 +1443,7 @@ namespace _8_puzzel
                                         break;
                                 }
                             }
-
                         }
-
                     }
                     else
                     {
@@ -1500,8 +1453,6 @@ namespace _8_puzzel
                 case Key.Down:
                     if (inGame == true)
                     {
-                        var width = (int)(gamefieldCanvas.ActualWidth / sizeY);//tru di do rong cua border
-                        var height = (int)(gamefieldCanvas.ActualHeight / sizeX) - 1;//tru di do rong cua border
                         if (_currentIndexNoneImage.X - 1 >= 0)
                         {
                             _selectedBitmap = _images[(int)_currentIndexNoneImage.X - 1, (int)_currentIndexNoneImage.Y];
@@ -1542,7 +1493,7 @@ namespace _8_puzzel
                                 switch (result)
                                 {
                                     case MessageBoxResult.Yes:
-                                        TimerCountDown.Text = "00:03:00";
+                                        TimerCountDown.Text = "";
                                         _time = TimeSpan.FromSeconds(180);
                                         inGame = false;
                                         btnPlay.Visibility = Visibility.Visible;
@@ -1564,14 +1515,9 @@ namespace _8_puzzel
                                 }
                             }
                         }
-                        else
-                        {
-
-                        }
                     }
                     else
                     {
-
                         MessageBox.Show("Game has not been started");
                     }
                     break;
